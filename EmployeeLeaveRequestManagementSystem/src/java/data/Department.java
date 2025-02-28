@@ -4,7 +4,7 @@ package data;
 
 public class Department {
     private int DepartmentID;
-    private String DeparmentName;
+    private String DepartmentName;
     private int ManagerID;
 
     public int getDepartmentID() {
@@ -15,12 +15,12 @@ public class Department {
         this.DepartmentID = DepartmentID;
     }
 
-    public String getDeparmentName() {
-        return DeparmentName;
+    public String getDepartmentName() {
+        return DepartmentName;
     }
 
-    public void setDeparmentName(String DeparmentName) {
-        this.DeparmentName = DeparmentName;
+    public void setDepartmentName(String DeparmentName) {
+        this.DepartmentName = DeparmentName;
     }
 
     public int getManagerID() {
