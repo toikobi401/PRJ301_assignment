@@ -10,7 +10,7 @@ public abstract class DBContext<T> {
     try {
         String user = "dat";
         String pass = "123";
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=assignment;encrypt=true;trustServerCertificate=true";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=AssignmentDB;encrypt=true;trustServerCertificate=true";
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         System.out.println("JDBC Driver loaded successfully!");
         connection = DriverManager.getConnection(url, user, pass);

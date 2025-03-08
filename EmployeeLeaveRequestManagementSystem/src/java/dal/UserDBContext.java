@@ -17,16 +17,17 @@ public ArrayList<User> list() {
         throw new RuntimeException("Database connection is not initialized.");
     }
     String sql = """
-                 SELECT [UserID]
-                       ,[Username]
-                       ,[PasswordHash]
-                       ,[FullName]
-                       ,[Email]
-                       ,[PhoneNumber]
-                       ,[DepartmentID]
-                       ,[CreatedAt]
-                       ,[UpdatedAt]
-                       ,[IsActive] FROM [assignment].[dbo].[User]""";
+                SELECT [UserID]
+                             ,[Username]
+                             ,[PasswordHash]
+                             ,[FullName]
+                             ,[Email]
+                             ,[PhoneNumber]
+                             ,[DepartmentID]
+                             ,[CreatedAt]
+                             ,[UpdatedAt]
+                             ,[IsActive]
+                         FROM [AssignmentDB].[dbo].[User]""";
     try {
         PreparedStatement stm = connection.prepareStatement(sql);
         ResultSet rs = stm.executeQuery();
