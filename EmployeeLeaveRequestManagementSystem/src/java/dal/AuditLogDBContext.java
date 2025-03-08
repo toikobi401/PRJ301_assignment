@@ -25,7 +25,7 @@ public class AuditLogDBContext extends DBContext<AuditLog>{
                       ,[Entity]
                       ,[EntityID]
                       ,[Timestamp]
-                  FROM [assignment].[dbo].[AuditLog]
+                  FROM [AssignmentDB].[dbo].[AuditLog]
                      """;
             try {
         PreparedStatement stm = connection.prepareStatement(sql);

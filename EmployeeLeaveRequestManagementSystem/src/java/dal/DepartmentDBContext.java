@@ -19,7 +19,7 @@ public class DepartmentDBContext extends DBContext<Department>{
                 SELECT  [DepartmentID]
                       ,[DepartmentName]
                       ,[ManagerID]
-                  FROM [assignment].[dbo].[Department]
+                  FROM [AssignmentDB].[dbo].[Department]
                      """;
             try {
         PreparedStatement stm = connection.prepareStatement(sql);

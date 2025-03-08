@@ -19,7 +19,7 @@ public class UserRoleDBContext extends DBContext<UserRole>{
                 SELECT [UserRoleID]
                         ,[UserID]
                         ,[RoleID]
-                    FROM [assignment].[dbo].[UserRole]
+                    FROM [AssignmentDB].[dbo].[UserRole]
                      """;
             try {
         PreparedStatement stm = connection.prepareStatement(sql);

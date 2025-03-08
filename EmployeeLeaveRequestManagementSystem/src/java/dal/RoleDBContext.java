@@ -24,7 +24,7 @@ public class RoleDBContext extends DBContext<Role>{
                 SELECT [RoleID]
                       ,[RoleName]
                       ,[Description]
-                  FROM [assignment].[dbo].[Role]
+                  FROM [AssignmentDB].[dbo].[Role]
                      """;
             try {
         PreparedStatement stm = connection.prepareStatement(sql);
