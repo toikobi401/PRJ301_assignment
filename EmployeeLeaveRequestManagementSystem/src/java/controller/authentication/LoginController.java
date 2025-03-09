@@ -24,12 +24,12 @@ public class LoginController extends HttpServlet {
         
         if(user!=null)
         {
-            EmployeeDBContext demp = new EmployeeDBContext();
-            Employee profile = demp.get(user.getEmployee().getId());
-            user.setEmployee(profile);
+            UserDBContext u = new UserDBContext();
+            
+         
             HttpSession session = req.getSession();
-            session.setAttribute("user", user);
-            resp.sendRedirect("welcome");
+            session.setAttribute("user", u);
+            resp.sendRedirect("view/auth/welcome.jsp");
         }
         else
         {
