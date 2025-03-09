@@ -1,6 +1,7 @@
 package data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 
 public class User {
@@ -14,7 +15,16 @@ public class User {
     private LocalDateTime CreatedAt;
     private LocalDateTime UpdateAt;
     private boolean IsActive;
+    private ArrayList<Role> roles = new ArrayList<>();  
 
+    public ArrayList<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(ArrayList<Role> roles) {
+        this.roles = roles;
+    }
+    
     public int getUserID() {
         return UserID;
     }
@@ -94,6 +104,8 @@ public class User {
     public void setIsActive(boolean IsActive) {
         this.IsActive = IsActive;
     }
+
+
     
 }
 
