@@ -1,6 +1,6 @@
 package data;
 
-import java.time.LocalDateTime;
+import java.sql.*;
 import java.util.ArrayList;
 
 
@@ -12,13 +12,29 @@ public class User {
     private String Email;
     private String PhoneNumber;
     private int DepartmentID;
-    private LocalDateTime CreatedAt;
-    private LocalDateTime UpdateAt;
+    private java.sql.Timestamp CreatedAt;
+    private java.sql.Timestamp UpdateAt;
     private boolean IsActive;
     private ArrayList<Role> roles = new ArrayList<>();  
 
     public ArrayList<Role> getRoles() {
         return roles;
+    }
+
+    public Timestamp getCreatedAt() {
+        return CreatedAt;
+    }
+
+    public void setCreatedAt(Timestamp CreatedAt) {
+        this.CreatedAt = CreatedAt;
+    }
+
+    public Timestamp getUpdateAt() {
+        return UpdateAt;
+    }
+
+    public void setUpdateAt(Timestamp UpdateAt) {
+        this.UpdateAt = UpdateAt;
     }
 
     public void setRoles(ArrayList<Role> roles) {
@@ -81,21 +97,7 @@ public class User {
         this.DepartmentID = DepartmentID;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return CreatedAt;
-    }
-
-    public void setCreatedAt(LocalDateTime CreatedAt) {
-        this.CreatedAt = CreatedAt;
-    }
-
-    public LocalDateTime getUpdateAt() {
-        return UpdateAt;
-    }
-
-    public void setUpdateAt(LocalDateTime UpdateAt) {
-        this.UpdateAt = UpdateAt;
-    }
+   
 
     public boolean isIsActive() {
         return IsActive;

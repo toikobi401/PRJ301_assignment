@@ -16,19 +16,16 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("Username");
-        String password = req.getParameter("PasswordHash");
+        String Username = req.getParameter("Username");
+        String Password = req.getParameter("PasswordHash");
         UserDBContext db =new UserDBContext();
-        User user = db.get(username, password);
+        User user = db.get(Username, Password);
        
         
         if(user!=null)
-        {
-            UserDBContext u = new UserDBContext();
-            
-         
+        {                     
             HttpSession session = req.getSession();
-            session.setAttribute("user", u);
+            session.setAttribute("user", user);
             resp.sendRedirect("view/auth/welcome.jsp");
         }
         else

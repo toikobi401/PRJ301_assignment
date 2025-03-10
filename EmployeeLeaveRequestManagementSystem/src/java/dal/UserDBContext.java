@@ -2,7 +2,6 @@ package dal;
 import data.User;
 import java.util.*;
 import java.sql.*;
-import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.tomcat.util.digester.ArrayStack;
@@ -38,8 +37,8 @@ public User get(String username, String password) {
                 String Email = rs.getString("Email");
                 String PhoneNumber = rs.getString("PhoneNumber");
                 int DepartmentID = rs.getInt("DepartmentID");
-                LocalDateTime CreatedAt = rs.getTimestamp("CreatedAt").toLocalDateTime();
-                LocalDateTime UpdateAt = rs.getTimestamp("UpdatedAt").toLocalDateTime();
+                Timestamp CreatedAt = rs.getTimestamp("CreatedAt");
+                Timestamp UpdateAt = rs.getTimestamp("UpdatedAt");
                 boolean IsActive = rs.getBoolean("IsActive");
                 
                 User u = new User();
@@ -92,8 +91,8 @@ public ArrayList<User> list() {
                 String Email = rs.getString("Email");
                 String PhoneNumber = rs.getString("PhoneNumber");
                 int DepartmentID = rs.getInt("DepartmentID");
-                LocalDateTime CreatedAt = rs.getTimestamp("CreatedAt").toLocalDateTime();
-                LocalDateTime UpdateAt = rs.getTimestamp("UpdatedAt").toLocalDateTime();
+                Timestamp CreatedAt = rs.getTimestamp("CreatedAt");
+                Timestamp UpdateAt = rs.getTimestamp("UpdatedAt");
                 boolean IsActive = rs.getBoolean("IsActive");
                 
                 User u = new User();

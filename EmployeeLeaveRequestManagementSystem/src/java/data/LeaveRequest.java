@@ -1,20 +1,52 @@
 package data;
 
-import java.time.LocalDateTime;
+import java.sql.*;
 
 public class LeaveRequest {
     private int RequestID;
     private int UserID;
-    private LocalDateTime FromDate;
-    private LocalDateTime ToDate;
+    private java.sql.Date FromDate;
+    private java.sql.Date ToDate;
     private String Reason;
     private int StatusID;
     private int ApprovedBy;
-    private LocalDateTime CreateAt;
-    private LocalDateTime UpdateAt;
+    private java.sql.Timestamp CreateAt;
+    private java.sql.Timestamp UpdateAt;
 
     public int getRequestID() {
         return RequestID;
+    }
+
+    public Date getFromDate() {
+        return FromDate;
+    }
+
+    public void setFromDate(Date FromDate) {
+        this.FromDate = FromDate;
+    }
+
+    public Date getToDate() {
+        return ToDate;
+    }
+
+    public void setToDate(Date ToDate) {
+        this.ToDate = ToDate;
+    }
+
+    public Timestamp getCreateAt() {
+        return CreateAt;
+    }
+
+    public void setCreateAt(Timestamp CreateAt) {
+        this.CreateAt = CreateAt;
+    }
+
+    public Timestamp getUpdateAt() {
+        return UpdateAt;
+    }
+
+    public void setUpdateAt(Timestamp UpdateAt) {
+        this.UpdateAt = UpdateAt;
     }
 
     public void setRequestID(int RequestID) {
@@ -29,21 +61,6 @@ public class LeaveRequest {
         this.UserID = UserID;
     }
 
-    public LocalDateTime getFromDate() {
-        return FromDate;
-    }
-
-    public void setFromDate(LocalDateTime FromDate) {
-        this.FromDate = FromDate;
-    }
-
-    public LocalDateTime getToDate() {
-        return ToDate;
-    }
-
-    public void setToDate(LocalDateTime ToDate) {
-        this.ToDate = ToDate;
-    }
 
     public String getReason() {
         return Reason;
@@ -69,21 +86,6 @@ public class LeaveRequest {
         this.ApprovedBy = ApprovedBy;
     }
 
-    public LocalDateTime getCreateAt() {
-        return CreateAt;
-    }
-
-    public void setCreateAt(LocalDateTime CreateAt) {
-        this.CreateAt = CreateAt;
-    }
-
-    public LocalDateTime getUpdateAt() {
-        return UpdateAt;
-    }
-
-    public void setUpdateAt(LocalDateTime UpdateAt) {
-        this.UpdateAt = UpdateAt;
-    }
 
  
 }
