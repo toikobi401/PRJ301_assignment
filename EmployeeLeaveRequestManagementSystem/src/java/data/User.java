@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class User {
     private int UserID;
-    private String UserName;
+    private String Username;
     private String PasswordHash;
     private String FullName;
     private String Email;
@@ -49,12 +49,12 @@ public class User {
         this.UserID = UserID;
     }
 
-    public String getUserName() {
-        return UserName;
+    public String getUsername() {
+        return Username;
     }
 
-    public void setUserName(String UserName) {
-        this.UserName = UserName;
+    public void setUsername(String UserName) {
+        this.Username = UserName;
     }
 
     public String getPasswordHash() {

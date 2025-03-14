@@ -73,7 +73,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             
             out.println("<ul>");
             for (User user : users) {
-                out.println("<li>" + user.getUserID() + " - " + user.getUserName() + "</li>");
+                out.println("<li>" + user.getUserID() + " - " + user.getUsername() + "</li>");
             }
             out.println("</ul>");
             

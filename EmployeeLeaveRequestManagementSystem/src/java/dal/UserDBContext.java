@@ -31,7 +31,7 @@ public User get(String username, String password) {
         while (rs.next()) {
             // Populate User object...
                 int UserID = rs.getInt("UserID");
-                String UserName = rs.getString("UserName");
+                String Username = rs.getString("UserName");
                 String PasswordHash = rs.getString("PasswordHash");
                 String FullName = rs.getString("FullName");
                 String Email = rs.getString("Email");
@@ -43,7 +43,7 @@ public User get(String username, String password) {
                 
                 User u = new User();
                 u.setUserID(UserID);
-                u.setUserName(UserName);
+                u.setUsername(Username);
                 u.setPasswordHash(PasswordHash);
                 u.setFullName(FullName);
                 u.setEmail(Email);
@@ -97,7 +97,7 @@ public ArrayList<User> list() {
                 
                 User u = new User();
                 u.setUserID(UserID);
-                u.setUserName(UserName);
+                u.setUsername(UserName);
                 u.setPasswordHash(PasswordHash);
                 u.setFullName(FullName);
                 u.setEmail(Email);
