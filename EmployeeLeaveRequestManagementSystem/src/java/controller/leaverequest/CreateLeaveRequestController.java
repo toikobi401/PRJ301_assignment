@@ -3,24 +3,20 @@ package controller.leaverequest;
 import dal.LeaveRequestDBContext;
 import data.LeaveRequest;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.*;
 
-public class CreateLeaveRequestController extends HttpServlet {
-    @Override
+
+public class CreateLeaveRequestController extends LeaveRequestDBContext {
+   
     protected void doPost(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Integer userId = (Integer) session.getAttribute("userId");
-
-        if (userId == null) {
-            response.sendRedirect("view/auth/login.jsp");
-            return;
-        }
+        int UserID = Integer.parseInt((String) session.getAttribute("UserID"));
 
         String reason = request.getParameter("reason");
         String fromDateStr = request.getParameter("fromDate"); // Chuỗi dạng "yyyy-MM-dd"
@@ -31,22 +27,22 @@ public class CreateLeaveRequestController extends HttpServlet {
         Date toDate = Date.valueOf(toDateStr);
 
         LeaveRequest leaveRequest = new LeaveRequest();
-        leaveRequest.setUserID(userId);
+        leaveRequest.setUserID(UserID);
         leaveRequest.setFromDate(fromDate);
         leaveRequest.setToDate(toDate);
         leaveRequest.setReason(reason);
-        leaveRequest.setStatusID(2); // Ví dụ: trạng thái mặc định
+        leaveRequest.setStatusID(3); // Ví dụ: trạng thái mặc định
 
         LeaveRequestDBContext dbContext = new LeaveRequestDBContext();
         try {
             dbContext.insert(leaveRequest);
-            response.sendRedirect("view/function/success.jsp");
+            response.sendRedirect("/view/function/success.jsp");
         } catch (IOException e) {
-            response.sendRedirect("view/function/error.jsp");
+            response.sendRedirect("/view/function/error.jsp");
         }
     }
-     @Override
+ 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("view/fuction/leaverequest.jsp").forward(req, resp);
+        req.getRequestDispatcher("/view/function/leaverequest.jsp").forward(req, resp);
     }
 }
