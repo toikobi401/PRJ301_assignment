@@ -63,9 +63,9 @@
     </div>
     <div class="container">
         <div class="menu">
-            <a href="../function/leaverequest.jsp">Tạo đơn xin nghỉ</a>
-            <a href="../function/managerequest.jsp">Duyệt đơn xin nghỉ</a>
-            <a href="../function/yourleavereq.jsp">Xem danh sách đơn xin nghỉ của bạn</a>
+            <a href="view/function/leaverequest.jsp">Tạo đơn xin nghỉ</a>
+            <a href="view/function/managerequest.jsp">Duyệt đơn xin nghỉ</a>
+            <a href="view/function/yourleavereq.jsp">Xem danh sách đơn xin nghỉ của bạn</a>
         </div>
     </div>
 </body>
