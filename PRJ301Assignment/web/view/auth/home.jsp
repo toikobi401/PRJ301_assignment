@@ -45,6 +45,21 @@
 <body>
     <div class="header">
         Welcome to Leave Management System
+        <%
+        Object userObj = session.getAttribute("user");
+        if (userObj instanceof data.User) {
+            data.User user = (data.User) userObj;
+            int userId = user.getUserID();
+        %>
+        <p>UserID: <%= userId %></p>
+        <p>Full Name: <%= user.getFullName() %></p>
+        <%
+            } else {
+        %>
+            <p>Bạn cần đăng nhập.</p>
+        <%
+            }
+        %>
     </div>
     <div class="container">
         <div class="menu">

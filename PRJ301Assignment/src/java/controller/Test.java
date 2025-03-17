@@ -47,7 +47,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        DBContext<User> userDB = new UserDBContext();
+            DBContext<User> userDB = new UserDBContext();
         DBContext<Role> roleDB = new RoleDBContext();
         DBContext<Department> depDB = new DepartmentDBContext();
         DBContext<UserRole> userroleDB = new UserRoleDBContext();

@@ -9,7 +9,7 @@ import org.apache.tomcat.util.digester.ArrayStack;
 public class UserDBContext extends DBContext<User>{
 
 public User get(String username, String password) {
-       User  user = new User();
+       User  u = new User();
     if (connection == null) {
         throw new RuntimeException("Database connection is not initialized.");
     }
@@ -24,9 +24,13 @@ public User get(String username, String password) {
                              ,[CreatedAt]
                              ,[UpdatedAt]
                              ,[IsActive]
-                         FROM [AssignmentDB].[dbo].[User]""";
+                         FROM [AssignmentDB].[dbo].[User]
+                 
+                 """;
     try {
         PreparedStatement stm = connection.prepareStatement(sql);
+        stm.setString(1, username);
+        stm.setString(2, password);
         ResultSet rs = stm.executeQuery();
         while (rs.next()) {
             // Populate User object...
@@ -41,7 +45,7 @@ public User get(String username, String password) {
                 Timestamp UpdateAt = rs.getTimestamp("UpdatedAt");
                 boolean IsActive = rs.getBoolean("IsActive");
                 
-                User u = new User();
+                
                 u.setUserID(UserID);
                 u.setUsername(Username);
                 u.setPasswordHash(PasswordHash);
@@ -57,7 +61,7 @@ public User get(String username, String password) {
     } catch (SQLException ex) {
         Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
     }
-    return user;
+    return u;
     }
     
     

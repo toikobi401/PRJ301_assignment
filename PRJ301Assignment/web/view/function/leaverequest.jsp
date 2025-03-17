@@ -51,20 +51,37 @@
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Tạo Đơn Xin Nghỉ</h2>
-        <form action="/PRJ301Assignment/LeaveRequest/create" method="post">
-            <label for="startDate">Ngày bắt đầu:</label>
-            <input type="date" id="startDate" name="startDate" required>
-            
-            <label for="endDate">Ngày kết thúc:</label>
-            <input type="date" id="endDate" name="endDate" required>
-            
-            <label for="reason">Lý do:</label>
-            <textarea id="reason" name="reason" rows="4" required></textarea>
-            
-            <input type="submit" value="Gửi Đơn">
-        </form>
-    </div>
+    <h1>Tạo đơn xin nghỉ</h1>
+    
+    <%-- Hiển thị thông tin người dùng từ user object --%>
+    <%
+        data.User user = (data.User) request.getAttribute("user");
+        if (user != null) {
+    %>
+        <p>UserID: <%= user.getUserID() %></p>
+        <p>FullName: <%= user.getFullName() %></p>
+    <%
+        } else {
+    %>
+        <p>Không tìm thấy thông tin người dùng.</p>
+    <%
+        }
+    %>
+
+    <%-- Form để nhập thông tin LeaveRequest --%>
+    <form action="create" method="post">
+        <label>Start Date:</label>
+        <input type="date" name="startDate" required><br>
+
+        <label>End Date:</label>
+        <input type="date" name="endDate" required><br>
+
+        <label>Reason:</label>
+        <textarea name="reason" required></textarea><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <a href="view/auth/home.jsp">Quay lại trang chủ</a>
 </body>
 </html>

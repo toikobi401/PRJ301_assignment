@@ -107,6 +107,10 @@ public class User {
         this.IsActive = IsActive;
     }
 
+    public void setUpdatedAt(Timestamp timestamp) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
 
     
 }
