@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="data.User" %> <!-- Thêm dòng này để import data.User -->
 <html>
 <head>
     <title>Home</title>
@@ -46,17 +47,16 @@
     <div class="header">
         Welcome to Leave Management System
         <%
-        Object userObj = session.getAttribute("user");
-        if (userObj instanceof data.User) {
-            data.User user = (data.User) userObj;
-            int userId = user.getUserID();
+            User userObj = (User) session.getAttribute("user"); // Ép kiểu ngay khi lấy từ session
+            if (userObj != null) {
+                // Không cần instanceof vì đã ép kiểu thành công
         %>
-        <p>UserID: <%= userId %></p>
-        <p>Full Name: <%= user.getFullName() %></p>
+                <p>UserID: <%= userObj.getUserID() %></p>
+                <p>Full Name: <%= userObj.getFullName() %></p>
         <%
             } else {
         %>
-            <p>Bạn cần đăng nhập.</p>
+                <p>Bạn cần đăng nhập.</p>
         <%
             }
         %>
