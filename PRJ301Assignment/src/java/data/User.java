@@ -1,11 +1,10 @@
 package data;
 
-import java.io.Serializable;
 import java.sql.*;
 import java.util.ArrayList;
 
 
-public class User implements Serializable{
+public class User {
     private int UserID;
     private String Username;
     private String PasswordHash;
