@@ -25,7 +25,7 @@ public User get(String username, String password) {
                              ,[UpdatedAt]
                              ,[IsActive]
                          FROM [AssignmentDB].[dbo].[User]
-                 
+                 WHERE [Username] = ?, [PasswordHash] = ?
                  """;
     try {
         PreparedStatement stm = connection.prepareStatement(sql);
@@ -38,8 +38,6 @@ public User get(String username, String password) {
                 String Username = rs.getString("UserName");
                 String PasswordHash = rs.getString("PasswordHash");
                 String FullName = rs.getString("FullName");
-                String Email = rs.getString("Email");
-                String PhoneNumber = rs.getString("PhoneNumber");
                 int DepartmentID = rs.getInt("DepartmentID");
                 Timestamp CreatedAt = rs.getTimestamp("CreatedAt");
                 Timestamp UpdateAt = rs.getTimestamp("UpdatedAt");
@@ -50,8 +48,6 @@ public User get(String username, String password) {
                 u.setUsername(Username);
                 u.setPasswordHash(PasswordHash);
                 u.setFullName(FullName);
-                u.setEmail(Email);
-                u.setPhoneNumber(PhoneNumber);
                 u.setDepartmentID(DepartmentID);
                 u.setCreatedAt(CreatedAt);
                 u.setUpdateAt(UpdateAt);
@@ -82,7 +78,10 @@ public ArrayList<User> list() {
                              ,[CreatedAt]
                              ,[UpdatedAt]
                              ,[IsActive]
-                         FROM [AssignmentDB].[dbo].[User]""";
+                         FROM [AssignmentDB].[dbo].[User]
+                 
+                 
+                 """;
     try {
         PreparedStatement stm = connection.prepareStatement(sql);
         ResultSet rs = stm.executeQuery();

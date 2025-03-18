@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="data.User" %>
 <html>
 <head>
     <title>Home</title>
@@ -46,20 +47,20 @@
     <div class="header">
         Welcome to Leave Management System
         <%
-        Object userObj = session.getAttribute("user");
-        if (userObj instanceof data.User) {
-            data.User user = (data.User) userObj;
-            int userId = user.getUserID();
+            User userObj = (User) session.getAttribute("user");
+            if (userObj != null) {
         %>
-        <p>UserID: <%= userId %></p>
-        <p>Full Name: <%= user.getFullName() %></p>
+                <p>UserID: <%= userObj.getUserID() %></p> <!-- Hiển thị userID từ session -->
+                <p>Full Name: <%= userObj.getFullName() != null ? userObj.getFullName() : "Not available" %></p>
         <%
             } else {
         %>
-            <p>Bạn cần đăng nhập.</p>
+                <p>Bạn cần đăng nhập.</p>
         <%
             }
         %>
+        <!-- Hiển thị userID từ request (nếu cần) -->
+        <p>UserID from request: <%= request.getAttribute("userID") != null ? request.getAttribute("userID") : "Not set" %></p>
     </div>
     <div class="container">
         <div class="menu">
