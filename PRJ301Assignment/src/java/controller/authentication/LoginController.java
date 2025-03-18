@@ -22,12 +22,15 @@ public class LoginController extends HttpServlet {
         User user = db.get(Username, Password);
        
         
-        if (user != null) {                     
+        if(user!=null)
+        {                     
             HttpSession session = req.getSession();
             session.setAttribute("user", user);
-            resp.sendRedirect(req.getContextPath() + "/view/auth/home.jsp");
-        } else {
-        resp.getWriter().println("login failed!");
+            req.getRequestDispatcher("/view/auth/home.jsp").forward(req, resp);
+        }
+        else
+        {
+            resp.getWriter().println("login failed!");
         }
     }
 
@@ -35,6 +38,5 @@ public class LoginController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/view/auth/login.html").forward(req, resp);
     }
-
-
+    
 }
