@@ -20,7 +20,31 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
 
     @Override
     public void insert(LeaveRequest model) {
-        String sql = "INSERT INTO LeaveRequest (UserID, FromDate, ToDate, Reason, StatusID, CreatedAt, UpdatedAt) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = """
+                     USE [AssignmentDB]
+                     GO
+                     
+                     INSERT INTO [dbo].[LeaveRequest]
+                                ([UserID]
+                                ,[FromDate]
+                                ,[ToDate]
+                                ,[Reason]
+                                ,[StatusID]
+                                ,[ApprovedBy]
+                                ,[CreatedAt]
+                                ,[UpdatedAt])
+                          VALUES
+                                (?
+                                ,?
+                                ,?
+                                ,?
+                                ,?
+                                ,?
+                                ,?
+                                ,?)
+                     GO
+                     
+                     """;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             // Gán các giá trị từ đối tượng LeaveRequest vào câu lệnh SQL
             pstmt.setInt(1, model.getUserID());

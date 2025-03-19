@@ -14,16 +14,16 @@ public User get(String username, String password) {
         throw new RuntimeException("Database connection is not initialized.");
     }
     String sql = """
-                SELECT [UserID]
-                             ,[Username]
-                             ,[PasswordHash]
-                             ,[FullName]
-                             ,[DepartmentID]
-                             ,[CreatedAt]
-                             ,[UpdatedAt]
-                             ,[IsActive]
-                         FROM [AssignmentDB].[dbo].[User]
-                 WHERE [Username] = ?, [PasswordHash] = ?
+SELECT [UserID]
+                                             ,[Username]
+                                             ,[PasswordHash]
+                                             ,[FullName]
+                                             ,[DepartmentID]
+                                             ,[CreatedAt]
+                                             ,[UpdatedAt]
+                                             ,[IsActive]
+                                         FROM [AssignmentDB].[dbo].[User]
+                                 WHERE [Username] = ? and [PasswordHash] = ?
                  """;
     try {
         PreparedStatement stm = connection.prepareStatement(sql);
@@ -50,6 +50,7 @@ public User get(String username, String password) {
                 u.setCreatedAt(CreatedAt);
                 u.setUpdateAt(UpdateAt);
                 u.setIsActive(IsActive);
+               
                 
         }
     } catch (SQLException ex) {
@@ -62,7 +63,7 @@ public User get(String username, String password) {
                Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
            }
     }
-    return u;
+     return u;
     }
     
     

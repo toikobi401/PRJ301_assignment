@@ -16,8 +16,8 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String Username = req.getParameter("Username");
-        String Password = req.getParameter("PasswordHash");
+        String Username = req.getParameter("username");
+        String Password = req.getParameter("password");
         UserDBContext db =new UserDBContext();
         User user = db.get(Username, Password);
        

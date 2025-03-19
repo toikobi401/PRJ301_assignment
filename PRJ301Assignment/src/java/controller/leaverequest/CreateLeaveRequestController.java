@@ -32,8 +32,6 @@ public class CreateLeaveRequestController extends HttpServlet {
             return;
         }
 
-        // Ghi log để kiểm tra UserID
-        System.out.println("UserID từ session trong doGet: " + user.getUserID());
 
         // Truyền thông tin user vào request để sử dụng trong leaverequest.jsp
         request.setAttribute("user", user);
