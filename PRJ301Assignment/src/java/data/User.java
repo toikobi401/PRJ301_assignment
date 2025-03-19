@@ -9,8 +9,6 @@ public class User {
     private String Username;
     private String PasswordHash;
     private String FullName;
-    private String Email;
-    private String PhoneNumber;
     private int DepartmentID;
     private java.sql.Timestamp CreatedAt;
     private java.sql.Timestamp UpdateAt;
@@ -73,21 +71,6 @@ public class User {
         this.FullName = FullName;
     }
 
-    public String getEmail() {
-        return Email;
-    }
-
-    public void setEmail(String Email) {
-        this.Email = Email;
-    }
-
-    public String getPhoneNumber() {
-        return PhoneNumber;
-    }
-
-    public void setPhoneNumber(String PhoneNumber) {
-        this.PhoneNumber = PhoneNumber;
-    }
 
     public int getDepartmentID() {
         return DepartmentID;

@@ -18,8 +18,6 @@ public User get(String username, String password) {
                              ,[Username]
                              ,[PasswordHash]
                              ,[FullName]
-                             ,[Email]
-                             ,[PhoneNumber]
                              ,[DepartmentID]
                              ,[CreatedAt]
                              ,[UpdatedAt]
@@ -57,6 +55,13 @@ public User get(String username, String password) {
     } catch (SQLException ex) {
         Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
     }
+    finally{
+           try {
+               connection.close();
+           } catch (SQLException ex) {
+               Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
+           }
+    }
     return u;
     }
     
@@ -72,8 +77,6 @@ public ArrayList<User> list() {
                              ,[Username]
                              ,[PasswordHash]
                              ,[FullName]
-                             ,[Email]
-                             ,[PhoneNumber]
                              ,[DepartmentID]
                              ,[CreatedAt]
                              ,[UpdatedAt]
@@ -91,8 +94,6 @@ public ArrayList<User> list() {
                 String UserName = rs.getString("UserName");
                 String PasswordHash = rs.getString("PasswordHash");
                 String FullName = rs.getString("FullName");
-                String Email = rs.getString("Email");
-                String PhoneNumber = rs.getString("PhoneNumber");
                 int DepartmentID = rs.getInt("DepartmentID");
                 Timestamp CreatedAt = rs.getTimestamp("CreatedAt");
                 Timestamp UpdateAt = rs.getTimestamp("UpdatedAt");
@@ -103,8 +104,6 @@ public ArrayList<User> list() {
                 u.setUsername(UserName);
                 u.setPasswordHash(PasswordHash);
                 u.setFullName(FullName);
-                u.setEmail(Email);
-                u.setPhoneNumber(PhoneNumber);
                 u.setDepartmentID(DepartmentID);
                 u.setCreatedAt(CreatedAt);
                 u.setUpdateAt(UpdateAt);
@@ -113,6 +112,13 @@ public ArrayList<User> list() {
         }
     } catch (SQLException ex) {
         Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    finally{
+        try {
+            connection.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     return user;
 }
