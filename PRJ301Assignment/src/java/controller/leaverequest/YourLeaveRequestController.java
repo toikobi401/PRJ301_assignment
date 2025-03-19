@@ -32,30 +32,10 @@ public class YourLeaveRequestController extends HttpServlet {
 
         // Lấy UserID từ đối tượng User
         int userId = user.getUserID();
-        System.out.println(userId);
-
         // Gọi eaveRequestDBContext để lấy danh sách đơn xin nghỉ
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         ArrayList<LeaveRequest> leaveRequests = db.list(userId);
         System.out.println("Danh sách đơn xin nghỉ phép của UserID: " + userId);
-        if (leaveRequests.isEmpty()) {
-            System.out.println("Không có đơn xin nghỉ phép nào.");
-        } else {
-            for (LeaveRequest lr : leaveRequests) {
-                System.out.println("-------------------------");
-                System.out.println("UserID: " + lr.getUserID());
-                System.out.println("FromDate: " + lr.getFromDate());
-                System.out.println("ToDate: " + lr.getToDate());
-                System.out.println("Reason: " + lr.getReason());
-                System.out.println("StatusID: " + lr.getStatusID());
-                System.out.println("StatusName: " + (lr.getLeaveStatus() != null ? lr.getLeaveStatus().getStatusName() : "N/A"));
-                System.out.println("Description: " + (lr.getLeaveStatus() != null ? lr.getLeaveStatus().getDescription() : "N/A"));
-                System.out.println("ApprovedBy: " + (lr.getApprovedBy() != null ? lr.getApprovedBy() : "Chưa phê duyệt"));
-                System.out.println("CreatedAt: " + lr.getCreateAt());
-                System.out.println("UpdatedAt: " + lr.getUpdateAt());
-                System.out.println("-------------------------");
-            }
-        }
 
         // Đặt danh sách vào request attribute để JSP sử dụng
         request.setAttribute("leaveRequests", leaveRequests);

@@ -4,8 +4,16 @@
         <servlet-name>YourLeaveRequestController</servlet-name>
         <servlet-class>controller.leaverequest.YourLeaveRequestController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DeleteLeaveRequestController</servlet-name>
+        <servlet-class>controller.leaverequest.DeleteLeaveRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UpdateLeaveRequestController</servlet-name>
+        <servlet-class>controller.leaverequest.UpdateLeaveRequestController</servlet-class>
+    </servlet>
     <servlet-mapping>
-        <servlet-name>ManageRequestServlet</servlet-name>
+        <servlet-name>ManageRequestServletController</servlet-name>
         <url-pattern>/LeaveRequest/manage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
@@ -15,6 +23,14 @@
     <servlet-mapping>
         <servlet-name>YourLeaveRequestController</servlet-name>
         <url-pattern>/LeaveRequest/list</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteLeaveRequestController</servlet-name>
+        <url-pattern>/LeaveRequest/delete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateLeaveRequestController</servlet-name>
+        <url-pattern>/LeaveRequest/update</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/auth/login.html</welcome-file>
@@ -36,8 +52,8 @@
         <servlet-class>controller.leaverequest.CreateLeaveRequestController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>ManageRequestServlet</servlet-name>
-        <servlet-class>controller.leaverequest.ManageRequestServlet</servlet-class>
+        <servlet-name>ManageRequestServletController</servlet-name>
+        <servlet-class>controller.leaverequest.ManageRequestServletController</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>EditLeaveRequestServlet</servlet-name>

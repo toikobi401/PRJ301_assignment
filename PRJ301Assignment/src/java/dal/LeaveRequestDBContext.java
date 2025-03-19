@@ -116,6 +116,19 @@ public ArrayList<LeaveRequest> list(int userId) {
         return requests;
     }
 
+    public void delete(int requestID) {
+        String sql = """
+                     DELETE FROM [dbo].[LeaveRequest]
+                     WHERE [RequestID] = ?
+                     """;
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, requestID);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Lỗi khi xóa LeaveRequest: " + e.getMessage(), e);
+        }
+    }
+    
     @Override
     public LeaveRequest get(int id) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -123,47 +136,14 @@ public ArrayList<LeaveRequest> list(int userId) {
 
     @Override
     public void update(LeaveRequest model) {
-        String sql = """
-                     UPDATE [dbo].[LeaveRequest]
-                        SET [UserID] = ?
-                           ,[FromDate] = ?
-                           ,[ToDate] = ?
-                           ,[Reason] = ?
-                           ,[StatusID] = ?
-                           ,[ApprovedBy] = ?
-                           ,[CreatedAt] = ?
-                           ,[UpdatedAt] = ?
-                      WHERE [UserID] = ?
-                     """;
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Gán giá trị cho các cột cần cập nhật
-            pstmt.setInt(1, model.getUserID());
-            pstmt.setDate(2, new java.sql.Date(model.getFromDate().getTime()));
-            pstmt.setDate(3, new java.sql.Date(model.getToDate().getTime()));
-            pstmt.setString(4, model.getReason());
-            pstmt.setInt(5, model.getStatusID());
-            if (model.getApprovedBy() != null) {
-                pstmt.setInt(6, model.getApprovedBy());
-            } else {
-                pstmt.setNull(6, java.sql.Types.INTEGER);
-            }
-            pstmt.setTimestamp(7, model.getCreateAt()); // Giữ nguyên CreatedAt từ model
-            Timestamp currentTimestamp = new Timestamp(System.currentTimeMillis());
-            pstmt.setTimestamp(8, currentTimestamp); // Cập nhật UpdatedAt thành thời gian hiện tại
-            pstmt.setInt(9, model.getUserID()); // Điều kiện WHERE dựa trên UserID
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
 
-            int rowsAffected = pstmt.executeUpdate();
-            if (rowsAffected == 0) {
-                throw new RuntimeException("Không tìm thấy bản ghi với UserID = " + model.getUserID() + " để cập nhật.");
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Lỗi khi cập nhật LeaveRequest: " + e.getMessage(), e);
-        }
     }
 
     @Override
     public void delete(LeaveRequest model) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+
     }
 
     @Override

@@ -23,7 +23,7 @@
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 900px;
+            max-width: 1000px;
             width: 100%;
         }
 
@@ -62,7 +62,59 @@
             color: #7f8c8d;
             padding: 20px;
         }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        .action-buttons a, .action-buttons button {
+            text-decoration: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .action-buttons .delete-btn {
+            background-color: #e74c3c;
+        }
+
+        .action-buttons .delete-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .action-buttons .update-btn {
+            background-color: #2ecc71;
+        }
+
+        .action-buttons .update-btn:hover {
+            background-color: #27ae60;
+        }
     </style>
+    <script>
+        function deleteLeaveRequest(requestID) {
+            if (confirm("Bạn có chắc chắn muốn xóa đơn xin nghỉ phép với ID: " + requestID + "?")) {
+                // Tạo form ẩn để gửi yêu cầu POST
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = "<%=request.getContextPath()%>/LeaveRequest/delete";
+
+                const input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "requestID";
+                input.value = requestID;
+                form.appendChild(input);
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="table-container">
@@ -81,6 +133,7 @@
                             <th>Người Phê Duyệt</th>
                             <th>Ngày Tạo</th>
                             <th>Ngày Cập Nhật</th>
+                            <th>Hành Động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -95,6 +148,10 @@
                                 <td>${request.approvedBy != null ? request.approvedBy : 'Chưa phê duyệt'}</td>
                                 <td>${request.createAt}</td>
                                 <td>${request.updateAt}</td>
+                                <td class="action-buttons">
+                                    <button class="delete-btn" onclick="deleteLeaveRequest(${request.requestID})">Xóa</button>
+                                    <a href="<%=request.getContextPath()%>/view/function/updateleavereq.jsp?requestID=${request.requestID}" class="update-btn">Cập Nhật</a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -106,4 +163,4 @@
         </c:choose>
     </div>
 </body>
-</html>
+</html> 
