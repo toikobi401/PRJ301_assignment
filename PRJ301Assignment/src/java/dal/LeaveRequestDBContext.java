@@ -9,8 +9,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
     @Override
     public void insert(LeaveRequest model) {
         String sql = """
-                    
-                     
+  
                      INSERT INTO [dbo].[LeaveRequest]
                                 ([UserID]
                                 ,[FromDate]
@@ -28,8 +27,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                                 ,?
                                 ,?
                                 ,?
-                                ,?)
-                     
+                                ,?)                    
                      """;
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setInt(1, model.getUserID());

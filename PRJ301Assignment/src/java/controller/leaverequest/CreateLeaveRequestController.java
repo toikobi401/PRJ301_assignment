@@ -31,17 +31,6 @@ public class CreateLeaveRequestController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu người dùng không hợp lệ.");
             return;
         }
-        // Lấy và in thông tin trực tiếp từ đối tượng User
-            System.out.println("Thông tin người dùng:");
-            System.out.println("User ID: " + user.getUserID());
-            System.out.println("Username: " + user.getUsername());
-            System.out.println("Full Name: " + user.getFullName());
-            System.out.println("Department ID: " + user.getDepartmentID());
-            System.out.println("Is Active: " + user.isIsActive());
-            System.out.println("Password Hash: " + user.getPasswordHash());
-            System.out.println("Created At: " + user.getCreatedAt());
-            System.out.println("Updated At: " + user.getUpdateAt());
-            System.out.println("Roles: " + user.getRoles());
 
         // Truyền thông tin user vào request để sử dụng trong leaverequest.js   p
         request.setAttribute("user", user);
