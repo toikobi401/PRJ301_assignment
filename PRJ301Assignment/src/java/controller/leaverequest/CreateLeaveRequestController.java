@@ -31,9 +31,19 @@ public class CreateLeaveRequestController extends HttpServlet {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu người dùng không hợp lệ.");
             return;
         }
+        // Lấy và in thông tin trực tiếp từ đối tượng User
+            System.out.println("Thông tin người dùng:");
+            System.out.println("User ID: " + user.getUserID());
+            System.out.println("Username: " + user.getUsername());
+            System.out.println("Full Name: " + user.getFullName());
+            System.out.println("Department ID: " + user.getDepartmentID());
+            System.out.println("Is Active: " + user.isIsActive());
+            System.out.println("Password Hash: " + user.getPasswordHash());
+            System.out.println("Created At: " + user.getCreatedAt());
+            System.out.println("Updated At: " + user.getUpdateAt());
+            System.out.println("Roles: " + user.getRoles());
 
-
-        // Truyền thông tin user vào request để sử dụng trong leaverequest.jsp
+        // Truyền thông tin user vào request để sử dụng trong leaverequest.js   p
         request.setAttribute("user", user);
 
         // Chuyển tiếp đến leaverequest.jsp
@@ -57,21 +67,21 @@ public class CreateLeaveRequestController extends HttpServlet {
         }
         User user = (User) userObj;
         int userId = user.getUserID();
-        System.out.println("UserID từ session trong doPost: " + userId); // Ghi log để kiểm tra
+
 
         // Nguồn 2: Lấy dữ liệu từ form (leaverequest.jsp)
-        String startDateStr = request.getParameter("startDate");
-        String endDateStr = request.getParameter("endDate");
+        String fromDate = request.getParameter("fromDate");
+        String toDate = request.getParameter("toDate");
         String reason = request.getParameter("reason");
 
         // Ghi log dữ liệu từ form
-        System.out.println("startDate từ form: " + startDateStr);
-        System.out.println("endDate từ form: " + endDateStr);
+        System.out.println("startDate từ form: " + fromDate);
+        System.out.println("endDate từ form: " + toDate);
         System.out.println("reason từ form: " + reason);
 
         // Kiểm tra dữ liệu từ form
-        if (startDateStr == null || startDateStr.trim().isEmpty() ||
-            endDateStr == null || endDateStr.trim().isEmpty() ||
+        if (fromDate == null || fromDate.trim().isEmpty() ||
+            toDate == null || toDate.trim().isEmpty() ||
             reason == null || reason.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu thông tin cần thiết.");
             return;
@@ -80,8 +90,8 @@ public class CreateLeaveRequestController extends HttpServlet {
         try {
             // Xử lý dữ liệu ngày
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate startLocalDate = LocalDate.parse(startDateStr, formatter);
-            LocalDate endLocalDate = LocalDate.parse(endDateStr, formatter);
+            LocalDate startLocalDate = LocalDate.parse(fromDate, formatter);
+            LocalDate endLocalDate = LocalDate.parse(toDate, formatter);
             Date startDate = Date.valueOf(startLocalDate);
             Date endDate = Date.valueOf(endLocalDate);
 
@@ -98,6 +108,7 @@ public class CreateLeaveRequestController extends HttpServlet {
             leaveRequest.setToDate(endDate); // Từ form
             leaveRequest.setReason(reason); // Từ form
             leaveRequest.setStatusID(3); // Mặc định là 3 như yêu cầu
+            leaveRequest.setApprovedBy(null);
 
             // Lưu vào cơ sở dữ liệu
             LeaveRequestDBContext leaveRequestDB = new LeaveRequestDBContext();
@@ -113,4 +124,5 @@ public class CreateLeaveRequestController extends HttpServlet {
             System.out.println("Lỗi chi tiết: " + e.getMessage()); // Ghi log lỗi
         }
     }
+    
 }

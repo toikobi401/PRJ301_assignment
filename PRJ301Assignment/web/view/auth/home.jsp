@@ -59,8 +59,6 @@
         <%
             }
         %>
-        <!-- Hiển thị userID từ request (nếu cần) -->
-        <p>UserID from request: <%= request.getAttribute("userID") != null ? request.getAttribute("userID") : "Not set" %></p>
     </div>
     <div class="container">
         <div class="menu">
