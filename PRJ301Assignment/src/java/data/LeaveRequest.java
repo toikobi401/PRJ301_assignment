@@ -8,11 +8,13 @@ public class LeaveRequest {
     private java.sql.Date FromDate;
     private java.sql.Date ToDate;
     private String Reason;
-    private int StatusID;
-    private Integer ApprovedBy; // Thay đổi từ int sang Integer
+    private int StatusID; // Giữ lại để tương thích với insert/update
+    private LeaveStatus leaveStatus; // Thêm thuộc tính LeaveStatus
+    private Integer ApprovedBy; // Đã thay đổi thành Integer trước đó
     private java.sql.Timestamp CreateAt;
     private java.sql.Timestamp UpdateAt;
 
+    // Getter và Setter cho các thuộc tính hiện có
     public int getRequestID() {
         return RequestID;
     }
@@ -61,11 +63,19 @@ public class LeaveRequest {
         this.StatusID = StatusID;
     }
 
-    public Integer getApprovedBy() { // Thay đổi từ int sang Integer
+    public LeaveStatus getLeaveStatus() {
+        return leaveStatus;
+    }
+
+    public void setLeaveStatus(LeaveStatus leaveStatus) {
+        this.leaveStatus = leaveStatus;
+    }
+
+    public Integer getApprovedBy() {
         return ApprovedBy;
     }
 
-    public void setApprovedBy(Integer ApprovedBy) { // Thay đổi từ int sang Integer
+    public void setApprovedBy(Integer ApprovedBy) {
         this.ApprovedBy = ApprovedBy;
     }
 

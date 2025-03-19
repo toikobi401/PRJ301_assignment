@@ -1,44 +1,108 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Your Leave Requests</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Đơn Xin Nghỉ Phép</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f4f7f9;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .table-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .table-container h2 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dfe6e9;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            font-weight: 500;
+        }
+
+        tr:hover {
+            background-color: #f1f3f5;
+        }
+
+        .no-data {
+            text-align: center;
+            color: #7f8c8d;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Your Leave Requests</h2>
-    <c:if test="${not empty error}">
-        <p style="color: red;">${error}</p>
-    </c:if>
-    <table border="1">
-        <tr>
-            <th>Request ID</th>
-            <th>Request Date</th>
-            <th>Reason</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-        <c:forEach var="request" items="${leaveRequests}">
-            <tr>
-                <td>${request.requestID}</td>
-                <td>${request.requestDate}</td>
-                <td>${request.reason}</td>
-                <td>
-                    <c:choose>
-                        <c:when test="${request.statusID == 0}">Pending</c:when>
-                        <c:when test="${request.statusID == 1}">Approved</c:when>
-                        <c:when test="${request.statusID == 2}">Rejected</c:when>
-                    </c:choose>
-                </td>
-                <td>
-                    <a href="EditLeaveRequestServlet?requestId=${request.requestID}">Edit</a> |
-                    <a href="DeleteLeaveRequestServlet?requestId=${request.requestID}" 
-                       onclick="return confirm('Are you sure?')">Delete</a>
-                </td>
-            </tr>
-        </c:forEach>
-    </table>
-    <a href="createLeave.jsp">Create New Request</a>
+    <div class="table-container">
+        <h2>Danh Sách Đơn Xin Nghỉ Phép</h2>
+        <c:choose>
+            <c:when test="${not empty leaveRequests}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>UserID</th>
+                            <th>Từ Ngày</th>
+                            <th>Đến Ngày</th>
+                            <th>Lý Do</th>
+                            <th>Trạng Thái</th>
+                            <th>Mô Tả Trạng Thái</th>
+                            <th>Người Phê Duyệt</th>
+                            <th>Ngày Tạo</th>
+                            <th>Ngày Cập Nhật</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="request" items="${leaveRequests}">
+                            <tr>
+                                <td>${request.userID}</td>
+                                <td>${request.fromDate}</td>
+                                <td>${request.toDate}</td>
+                                <td>${request.reason}</td>
+                                <td>${request.leaveStatus.statusName}</td>
+                                <td>${request.leaveStatus.description}</td>
+                                <td>${request.approvedBy != null ? request.approvedBy : 'Chưa phê duyệt'}</td>
+                                <td>${request.createAt}</td>
+                                <td>${request.updateAt}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:when>
+            <c:otherwise>
+                <p class="no-data">Không có đơn xin nghỉ phép nào.</p>
+            </c:otherwise>
+        </c:choose>
+    </div>
 </body>
 </html>

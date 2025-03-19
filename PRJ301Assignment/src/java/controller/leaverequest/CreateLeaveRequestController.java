@@ -32,7 +32,7 @@ public class CreateLeaveRequestController extends HttpServlet {
             return;
         }
 
-        // Truyền thông tin user vào request để sử dụng trong leaverequest.js   p
+        // Truyền thông tin user vào request để sử dụng trong leaverequest.jsp
         request.setAttribute("user", user);
 
         // Chuyển tiếp đến leaverequest.jsp
@@ -56,7 +56,6 @@ public class CreateLeaveRequestController extends HttpServlet {
         }
         User user = (User) userObj;
         int userId = user.getUserID();
-
 
         // Nguồn 2: Lấy dữ liệu từ form (leaverequest.jsp)
         String fromDate = request.getParameter("fromDate");
@@ -103,8 +102,8 @@ public class CreateLeaveRequestController extends HttpServlet {
             LeaveRequestDBContext leaveRequestDB = new LeaveRequestDBContext();
             leaveRequestDB.insert(leaveRequest);
 
-            // Chuyển hướng sau khi thành công
-            response.sendRedirect("/view/function/yourleavereq.jsp");
+            // Chuyển hướng đến success.jsp sau khi thành công
+            response.sendRedirect(request.getContextPath() + "/view/function/success.jsp");
 
         } catch (DateTimeParseException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Định dạng ngày không hợp lệ: " + e.getMessage());
@@ -113,5 +112,4 @@ public class CreateLeaveRequestController extends HttpServlet {
             System.out.println("Lỗi chi tiết: " + e.getMessage()); // Ghi log lỗi
         }
     }
-    
 }
