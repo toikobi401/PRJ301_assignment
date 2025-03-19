@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -89,8 +90,8 @@
                                 <td>${request.fromDate}</td>
                                 <td>${request.toDate}</td>
                                 <td>${request.reason}</td>
-                                <td>${request.leaveStatus.statusName}</td>
-                                <td>${request.leaveStatus.description}</td>
+                                <td>${request.leaveStatus != null ? request.leaveStatus.statusName : 'N/A'}</td>
+                                <td>${request.leaveStatus != null ? request.leaveStatus.description : 'N/A'}</td>
                                 <td>${request.approvedBy != null ? request.approvedBy : 'Chưa phê duyệt'}</td>
                                 <td>${request.createAt}</td>
                                 <td>${request.updateAt}</td>

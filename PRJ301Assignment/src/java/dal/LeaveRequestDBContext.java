@@ -75,7 +75,7 @@ public ArrayList<LeaveRequest> list(int userId) {
                           ,lr.[CreatedAt]
                           ,lr.[UpdatedAt]
                       FROM [AssignmentDB].[dbo].[LeaveRequest] as lr
-                      JOIN [AssignmentDB].[dbo].[LeaveStatus] as ls
+                      LEFT JOIN [AssignmentDB].[dbo].[LeaveStatus] as ls
                       ON ls.StatusID = lr.StatusID
                       WHERE lr.[UserID] = ?
                      """;
