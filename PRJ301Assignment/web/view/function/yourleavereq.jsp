@@ -9,127 +9,146 @@
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f7f9;
+            background-color: #f0f2f5;
             margin: 0;
-            padding: 40px;
+            padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
 
-        .table-container {
-            background-color: #ffffff;
+        .container {
+            background-color: #fff;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 1000px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
+            max-width: 1200px;
         }
 
-        .table-container h2 {
+        h2 {
             text-align: center;
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 24px;
+            color: #1a73e8;
+            margin-bottom: 30px;
+            font-size: 28px;
             font-weight: 600;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         th, td {
-            padding: 12px;
+            padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #dfe6e9;
+            border-bottom: 1px solid #e0e0e0;
         }
 
         th {
-            background-color: #3498db;
+            background-color: #1a73e8;
             color: white;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
         }
 
         tr:hover {
-            background-color: #f1f3f5;
+            background-color: #f5f7fa;
         }
 
         .no-data {
             text-align: center;
-            color: #7f8c8d;
-            padding: 20px;
+            color: #666;
+            padding: 30px;
+            font-size: 16px;
         }
 
         .action-buttons {
             display: flex;
             gap: 10px;
-            justify-content: flex-start;
-            align-items: center;
         }
 
-        .action-buttons a, .action-buttons button {
-            text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 4px;
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
             font-size: 14px;
+            text-decoration: none;
             color: white;
             border: none;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
 
-        .action-buttons .delete-btn {
-            background-color: #e74c3c;
+        .btn-delete {
+            background-color: #e63946;
         }
 
-        .action-buttons .delete-btn:hover {
-            background-color: #c0392b;
+        .btn-delete:hover {
+            background-color: #d00000;
         }
 
-        .action-buttons .update-btn {
-            background-color: #2ecc71;
+        .btn-update {
+            background-color: #2a9d8f;
         }
 
-        .action-buttons .update-btn:hover {
-            background-color: #27ae60;
+        .btn-update:hover {
+            background-color: #21867a;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .back-link a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            table, th, td {
+                display: block;
+                width: 100%;
+            }
+            th, td {
+                padding: 10px;
+            }
+            .action-buttons {
+                justify-content: center;
+            }
         }
     </style>
     <script>
         function deleteLeaveRequest(requestID) {
             if (confirm("Bạn có chắc chắn muốn xóa đơn xin nghỉ phép với ID: " + requestID + "?")) {
-                // Tạo form ẩn để gửi yêu cầu POST
-                const form = document.createElement("form");
-                form.method = "POST";
-                form.action = "<%=request.getContextPath()%>/LeaveRequest/delete";
-
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "requestID";
-                input.value = requestID;
-                form.appendChild(input);
-
-                document.body.appendChild(form);
-                form.submit();
+                window.location.href = "<%=request.getContextPath()%>/LeaveRequest/delete?requestID=" + requestID;
             }
         }
     </script>
 </head>
 <body>
-    <div class="table-container">
+    <div class="container">
         <h2>Danh Sách Đơn Xin Nghỉ Phép</h2>
         <c:choose>
             <c:when test="${not empty leaveRequests}">
                 <table>
                     <thead>
                         <tr>
-                            <th>UserID</th>
+                            <th>ID Đơn</th>
+                            <th>ID Người Dùng</th>
                             <th>Từ Ngày</th>
                             <th>Đến Ngày</th>
                             <th>Lý Do</th>
                             <th>Trạng Thái</th>
-                            <th>Mô Tả Trạng Thái</th>
+                            <th>Mô Tả</th>
                             <th>Người Phê Duyệt</th>
                             <th>Ngày Tạo</th>
                             <th>Ngày Cập Nhật</th>
@@ -139,18 +158,19 @@
                     <tbody>
                         <c:forEach var="request" items="${leaveRequests}">
                             <tr>
+                                <td>${request.requestID}</td>
                                 <td>${request.userID}</td>
                                 <td>${request.fromDate}</td>
                                 <td>${request.toDate}</td>
                                 <td>${request.reason}</td>
-                                <td>${request.leaveStatus != null ? request.leaveStatus.statusName : 'N/A'}</td>
+                                <td>${request.leaveStatus != null ? request.leaveStatus.statusName : 'Chưa xác định'}</td>
                                 <td>${request.leaveStatus != null ? request.leaveStatus.description : 'N/A'}</td>
                                 <td>${request.approvedBy != null ? request.approvedBy : 'Chưa phê duyệt'}</td>
                                 <td>${request.createAt}</td>
                                 <td>${request.updateAt}</td>
                                 <td class="action-buttons">
-                                    <button class="delete-btn" onclick="deleteLeaveRequest(${request.requestID})">Xóa</button>
-                                    <a href="<%=request.getContextPath()%>/view/function/updateleavereq.jsp?requestID=${request.requestID}" class="update-btn">Cập Nhật</a>
+                                    <button class="btn btn-delete" onclick="deleteLeaveRequest(${request.requestID})">Xóa</button>
+                                    <a href="<%=request.getContextPath()%>/LeaveRequest/update?requestID=${request.requestID}" class="btn btn-update">Cập Nhật</a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -158,9 +178,12 @@
                 </table>
             </c:when>
             <c:otherwise>
-                <p class="no-data">Không có đơn xin nghỉ phép nào.</p>
+                <p class="no-data">Hiện tại không có đơn xin nghỉ phép nào.</p>
             </c:otherwise>
         </c:choose>
+        <div class="back-link">
+            <a href="<%=request.getContextPath()%>/view/auth/home.jsp">Quay về Trang Chủ</a>
+        </div>
     </div>
 </body>
-</html> 
+</html>
