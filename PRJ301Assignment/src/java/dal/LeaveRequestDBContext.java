@@ -1,17 +1,13 @@
 package dal;
 
-import data.Feature;
+import data.*;
 import java.sql.*;
 import java.util.*;
-import data.LeaveRequest;
-import data.LeaveStatus;
-import data.Role;
-import data.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
-    
+
     public boolean hasOverlappingLeaveRequest(int userId, java.sql.Date fromDate, java.sql.Date toDate, Integer excludeRequestId) {
         String sql = "SELECT COUNT(*) " +
                     "FROM LeaveRequest " +
@@ -45,7 +41,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
         return false;
     }
-    
+
     @Override
     public void insert(LeaveRequest model) {
         String sql = """
@@ -141,7 +137,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 requests.add(lr);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy danh sách đơn xin nghỉ: " + ex.getMessage(), ex);
         }
         return requests;
     }
@@ -256,7 +252,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 userFullNameMap.put(rs.getInt("UserID"), rs.getString("FullName"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy danh sách đơn xin nghỉ: " + ex.getMessage(), ex);
         }
         return requests;
     }
@@ -317,7 +313,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
             }
             return null;
         } catch (SQLException ex) {
-            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy đơn xin nghỉ: " + ex.getMessage(), ex);
             return null;
         }
     }
@@ -334,7 +330,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 userFullNameMap.put(rs.getInt("UserID"), rs.getString("FullName"));
             }
         } catch (SQLException ex) {
-            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy danh sách user: " + ex.getMessage(), ex);
         }
         return userFullNameMap;
     }

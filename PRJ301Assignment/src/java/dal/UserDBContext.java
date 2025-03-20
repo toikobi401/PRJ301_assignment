@@ -8,9 +8,7 @@ import java.util.logging.Logger;
 import org.apache.tomcat.util.digester.ArrayStack;
 
 public class UserDBContext extends DBContext<User> {
-    
-    
-    
+
     public User get(String username, String password) {
         User user = null;
         if (connection == null) {
@@ -74,13 +72,7 @@ public class UserDBContext extends DBContext<User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy user: " + ex.getMessage(), ex);
         }
         return user;
     }
@@ -127,18 +119,11 @@ public class UserDBContext extends DBContext<User> {
                 user.add(u);
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy danh sách user: " + ex.getMessage(), ex);
         }
         return user;
     }
 
-    // Thêm phương thức newget(int id)
     public User newget(int id) {
         User user = null;
         if (connection == null) {
@@ -201,13 +186,7 @@ public class UserDBContext extends DBContext<User> {
                 }
             }
         } catch (SQLException ex) {
-            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            try {
-                connection.close();
-            } catch (SQLException ex) {
-                Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy user: " + ex.getMessage(), ex);
         }
         return user;
     }

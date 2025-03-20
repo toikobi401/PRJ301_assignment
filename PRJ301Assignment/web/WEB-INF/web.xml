@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+    <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>YourLeaveRequestController</servlet-name>
@@ -27,6 +27,14 @@
     <servlet>
         <servlet-name>HomeController</servlet-name>
         <servlet-class>controller.authentication.HomeController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserListController</servlet-name>
+        <servlet-class>controller.agenda.UserListController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserWorkingDetailController</servlet-name>
+        <servlet-class>controller.agenda.UserWorkingDetailController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>ManageRequestServletController</servlet-name>
@@ -59,6 +67,14 @@
     <servlet-mapping>
         <servlet-name>HomeController</servlet-name>
         <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserListController</servlet-name>
+        <url-pattern>/agenda/userlist</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserWorkingDetailController</servlet-name>
+        <url-pattern>/agenda/userworkingdetail</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/auth/login.html</welcome-file>

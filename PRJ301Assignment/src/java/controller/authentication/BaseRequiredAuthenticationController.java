@@ -1,5 +1,6 @@
 package controller.authentication;
 
+import data.Role;
 import data.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +18,14 @@ public abstract class BaseRequiredAuthenticationController extends HttpServlet {
         }
         return null;
     }
-
+    protected boolean isAdmin(User user) {
+    for (Role role : user.getRoles()) {
+        if (role.getRoleID() == 1) {
+            return true;
+        }
+    }
+    return false;
+}
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = getAuthenticatedUser(req);
