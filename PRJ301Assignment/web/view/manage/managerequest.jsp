@@ -135,12 +135,12 @@
                     <tr>
                         <td>${request.requestID}</td>
                         <td>${fullName}</td>
-                        <td><fmt:formatDate value="${request.fromDate}" pattern="yyyy-MM-dd"/></td>
-                        <td><fmt:formatDate value="${request.toDate}" pattern="yyyy-MM-dd"/></td>
+                        <td><fmt:formatDate value="${request.fromDate}" pattern="dd/MM/yyyy"/></td>
+                        <td><fmt:formatDate value="${request.toDate}" pattern="dd/MM/yyyy"/></td>
                         <td>${request.reason}</td>
                         <td class="status-pending">${request.leaveStatus.statusName}</td>
-                        <td><fmt:formatDate value="${request.createAt}" pattern="yyyy-MM-dd HH:mm:ss.SSS"/></td>
-                        <td><fmt:formatDate value="${request.updateAt}" pattern="yyyy-MM-dd HH:mm:ss.SSS"/></td>
+                        <td><fmt:formatDate value="${request.createAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                        <td><fmt:formatDate value="${request.updateAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                         <td>
                             <div class="action-buttons">
                                 <a href="<%=request.getContextPath()%>/LeaveRequest/approve?id=${request.requestID}" class="btn btn-approve">Duyệt</a>

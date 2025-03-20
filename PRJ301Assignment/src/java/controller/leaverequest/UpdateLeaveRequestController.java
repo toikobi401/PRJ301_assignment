@@ -20,13 +20,15 @@ public class UpdateLeaveRequestController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn cần đăng nhập để cập nhật đơn xin nghỉ.");
+            request.setAttribute("errorMessage", "Bạn cần đăng nhập để cập nhật đơn xin nghỉ.");
+            request.getRequestDispatcher("/view/auth/login.jsp").forward(request, response);
             return;
         }
 
         Object userObj = session.getAttribute("user");
         if (!(userObj instanceof User)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu người dùng không hợp lệ.");
+            request.setAttribute("errorMessage", "Dữ liệu người dùng không hợp lệ.");
+            request.getRequestDispatcher("/view/auth/login.jsp").forward(request, response);
             return;
         }
         User user = (User) userObj;
@@ -35,17 +37,19 @@ public class UpdateLeaveRequestController extends HttpServlet {
         System.out.println("requestID từ query string (doGet): " + requestIDStr);
 
         if (requestIDStr == null || requestIDStr.trim().isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu requestID.");
+            request.setAttribute("errorMessage", "Thiếu requestID.");
+            request.getRequestDispatcher("/view/function/listleaverequest.jsp").forward(request, response);
             return;
         }
 
         try {
             int requestID = Integer.parseInt(requestIDStr);
             LeaveRequestDBContext db = new LeaveRequestDBContext();
-            LeaveRequest leaveRequest = db.get(requestID);
+            LeaveRequest leaveRequest = db.newget(requestID);
 
             if (leaveRequest == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy đơn xin nghỉ với ID: " + requestID);
+                request.setAttribute("errorMessage", "Không tìm thấy đơn xin nghỉ với ID: " + requestID);
+                request.getRequestDispatcher("/view/function/listleaverequest.jsp").forward(request, response);
                 return;
             }
 
@@ -56,9 +60,11 @@ public class UpdateLeaveRequestController extends HttpServlet {
             request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
 
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "requestID không hợp lệ: " + e.getMessage());
+            request.setAttribute("errorMessage", "requestID không hợp lệ: " + e.getMessage());
+            request.getRequestDispatcher("/view/function/listleaverequest.jsp").forward(request, response);
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Lỗi khi tải đơn xin nghỉ: " + e.getMessage());
+            request.setAttribute("errorMessage", "Lỗi khi tải đơn xin nghỉ: " + e.getMessage());
+            request.getRequestDispatcher("/view/function/listleaverequest.jsp").forward(request, response);
             System.out.println("Lỗi chi tiết: " + e.getMessage());
         }
     }
@@ -67,19 +73,20 @@ public class UpdateLeaveRequestController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Bạn cần đăng nhập để cập nhật đơn xin nghỉ.");
+            request.setAttribute("errorMessage", "Bạn cần đăng nhập để cập nhật đơn xin nghỉ.");
+            request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
             return;
         }
 
         Object userObj = session.getAttribute("user");
         if (!(userObj instanceof User)) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Dữ liệu người dùng không hợp lệ.");
+            request.setAttribute("errorMessage", "Dữ liệu người dùng không hợp lệ.");
+            request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
             return;
         }
         User user = (User) userObj;
         int userId = user.getUserID();
 
-        // Lấy requestID từ query string (thay vì từ form)
         String requestIDStr = request.getParameter("requestID");
         String fromDate = request.getParameter("fromDate");
         String toDate = request.getParameter("toDate");
@@ -94,7 +101,8 @@ public class UpdateLeaveRequestController extends HttpServlet {
             fromDate == null || fromDate.trim().isEmpty() ||
             toDate == null || toDate.trim().isEmpty() ||
             reason == null || reason.trim().isEmpty()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Thiếu thông tin cần thiết.");
+            request.setAttribute("errorMessage", "Thiếu thông tin cần thiết.");
+            request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
             return;
         }
 
@@ -103,22 +111,29 @@ public class UpdateLeaveRequestController extends HttpServlet {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate startLocalDate = LocalDate.parse(fromDate, formatter);
             LocalDate endLocalDate = LocalDate.parse(toDate, formatter);
-            Date startDate = Date.valueOf(startLocalDate);
-            Date endDate = Date.valueOf(endLocalDate);
+            java.sql.Date startDate = java.sql.Date.valueOf(startLocalDate);
+            java.sql.Date endDate = java.sql.Date.valueOf(endLocalDate);
 
             if (startDate.after(endDate)) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Ngày bắt đầu không thể sau ngày kết thúc.");
+                request.setAttribute("errorMessage", "Ngày bắt đầu không thể sau ngày kết thúc.");
+                request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
                 return;
             }
 
             LeaveRequestDBContext db = new LeaveRequestDBContext();
-            LeaveRequest leaveRequest = db.get(requestID);
+            LeaveRequest leaveRequest = db.newget(requestID);
             if (leaveRequest == null) {
-                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Không tìm thấy đơn xin nghỉ với ID: " + requestID);
+                request.setAttribute("errorMessage", "Không tìm thấy đơn xin nghỉ với ID: " + requestID);
+                request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
                 return;
             }
 
-            leaveRequest.setUserID(userId);
+            if (db.hasOverlappingLeaveRequest(userId, startDate, endDate, requestID)) {
+                request.setAttribute("errorMessage", "Khoảng thời gian này trùng với một đơn xin nghỉ khác của bạn.");
+                request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
+                return;
+            }
+
             leaveRequest.setFromDate(startDate);
             leaveRequest.setToDate(endDate);
             leaveRequest.setReason(reason);
@@ -127,11 +142,14 @@ public class UpdateLeaveRequestController extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/LeaveRequest/list");
 
         } catch (NumberFormatException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "requestID không hợp lệ: " + e.getMessage());
+            request.setAttribute("errorMessage", "requestID không hợp lệ: " + e.getMessage());
+            request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
         } catch (DateTimeParseException e) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Định dạng ngày không hợp lệ: " + e.getMessage());
+            request.setAttribute("errorMessage", "Định dạng ngày không hợp lệ: " + e.getMessage());
+            request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
         } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Không thể cập nhật đơn xin nghỉ: " + e.getMessage());
+            request.setAttribute("errorMessage", "Không thể cập nhật đơn xin nghỉ: " + e.getMessage());
+            request.getRequestDispatcher("/view/function/updateleavereq.jsp").forward(request, response);
             System.out.println("Lỗi chi tiết: " + e.getMessage());
         }
     }

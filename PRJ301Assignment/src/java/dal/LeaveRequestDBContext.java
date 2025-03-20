@@ -11,7 +11,41 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
+    
+    public boolean hasOverlappingLeaveRequest(int userId, java.sql.Date fromDate, java.sql.Date toDate, Integer excludeRequestId) {
+        String sql = "SELECT COUNT(*) " +
+                    "FROM LeaveRequest " +
+                    "WHERE UserID = ? " +
+                    "AND (FromDate <= ? AND ToDate >= ? " +
+                    "OR FromDate <= ? AND ToDate >= ? " +
+                    "OR FromDate >= ? AND ToDate <= ?)";
+        if (excludeRequestId != null) {
+            sql += " AND RequestID != ?";
+        }
 
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+            stmt.setDate(2, toDate);
+            stmt.setDate(3, fromDate);
+            stmt.setDate(4, toDate);
+            stmt.setDate(5, fromDate);
+            stmt.setDate(6, fromDate);
+            stmt.setDate(7, toDate);
+            if (excludeRequestId != null) {
+                stmt.setInt(8, excludeRequestId);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi kiểm tra trùng lặp thời gian: " + e.getMessage(), e);
+            throw new RuntimeException("Lỗi khi kiểm tra trùng lặp thời gian: " + e.getMessage(), e);
+        }
+        return false;
+    }
+    
     @Override
     public void insert(LeaveRequest model) {
         String sql = """
@@ -224,12 +258,6 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         } catch (SQLException ex) {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        // Lưu userFullNameMap vào request để sử dụng trong JSP
-        if (!requests.isEmpty()) {
-            // Lưu userFullNameMap vào một thuộc tính tĩnh hoặc truyền qua một cơ chế khác
-            // Ở đây, chúng ta sẽ truyền qua servlet
-        }
         return requests;
     }
 
@@ -294,7 +322,6 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
         }
     }
 
-    // Phương thức để lấy ánh xạ UserID với FullName
     public Map<Integer, String> getUserFullNameMap() {
         Map<Integer, String> userFullNameMap = new HashMap<>();
         String sql = """

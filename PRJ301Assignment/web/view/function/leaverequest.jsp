@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -81,6 +82,16 @@
             background-color: #2980b9;
         }
 
+        .error-message {
+            color: #e74c3c;
+            background-color: #f9e1e1;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
         /* Responsive design */
         @media (max-width: 480px) {
             .form-container {
@@ -95,15 +106,21 @@
 <body>
     <div class="form-container">
         <h2>Tạo Đơn Xin Nghỉ Phép</h2>
+        <!-- Hiển thị thông báo lỗi nếu có -->
+        <c:if test="${not empty errorMessage}">
+            <div class="error-message">
+                ${errorMessage}
+            </div>
+        </c:if>
         <form method="post" action="<%=request.getContextPath()%>/LeaveRequest/create">
             <label for="reason">Lý do nghỉ phép:</label>
-            <textarea id="reason" name="reason" required placeholder="Nhập lý do nghỉ phép..."></textarea>
+            <textarea id="reason" name="reason" required placeholder="Nhập lý do nghỉ phép...">${param.reason}</textarea>
             
             <label for="fromDate">Từ ngày:</label>
-            <input type="date" id="fromDate" name="fromDate" required>
+            <input type="date" id="fromDate" name="fromDate" value="${param.fromDate}" required>
             
             <label for="toDate">Đến ngày:</label>
-            <input type="date" id="toDate" name="toDate" required>
+            <input type="date" id="toDate" name="toDate" value="${param.toDate}" required>
             
             <input type="submit" value="Gửi Đơn Xin Nghỉ Phép">
         </form>

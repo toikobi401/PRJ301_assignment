@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -184,14 +185,14 @@
                     <tbody>
                         <c:forEach var="request" items="${leaveRequests}">
                             <tr>
-                                <td>${request.fromDate}</td>
-                                <td>${request.toDate}</td>
+                                <td><fmt:formatDate value="${request.fromDate}" pattern="dd/MM/yyyy"/></td>
+                                <td><fmt:formatDate value="${request.toDate}" pattern="dd/MM/yyyy"/></td>
                                 <td>${request.reason}</td>
                                 <td>${request.leaveStatus != null ? request.leaveStatus.statusName : 'Chưa xác định'}</td>
                                 <td>${request.leaveStatus != null ? request.leaveStatus.description : 'N/A'}</td>
                                 <td>${request.approvedBy != null ? request.approvedBy : 'Chưa phê duyệt'}</td>
-                                <td>${request.createAt}</td>
-                                <td>${request.updateAt}</td>
+                                <td><fmt:formatDate value="${request.createAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                                <td><fmt:formatDate value="${request.updateAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
                                 <td class="action-buttons">
                                     <button class="btn btn-delete" onclick="deleteLeaveRequest(${request.requestID})">Xóa</button>
                                     <a href="<%=request.getContextPath()%>/LeaveRequest/update?requestID=${request.requestID}" class="btn btn-update">Cập Nhật</a>
