@@ -20,6 +20,14 @@
         <servlet-name>RejectLeaveRequestController</servlet-name>
         <servlet-class>controller.leaverequest.RejectLeaveRequestController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LogoutController</servlet-name>
+        <servlet-class>controller.authentication.LogoutController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HomeController</servlet-name>
+        <servlet-class>controller.authentication.HomeController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ManageRequestServletController</servlet-name>
         <url-pattern>/LeaveRequest/manage</url-pattern>
@@ -43,6 +51,14 @@
     <servlet-mapping>
         <servlet-name>RejectLeaveRequestController</servlet-name>
         <url-pattern>/LeaveRequest/reject</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutController</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeController</servlet-name>
+        <url-pattern>/home</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/auth/login.html</welcome-file>

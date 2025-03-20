@@ -8,7 +8,9 @@ import java.util.logging.Logger;
 import org.apache.tomcat.util.digester.ArrayStack;
 
 public class UserDBContext extends DBContext<User> {
-
+    
+    
+    
     public User get(String username, String password) {
         User user = null;
         if (connection == null) {

@@ -228,7 +228,7 @@
             </c:otherwise>
         </c:choose>
         <div class="back-link">
-            <a href="<%=request.getContextPath()%>/view/auth/home.jsp">Quay về Trang Chủ</a>
+            <a href="<%=request.getContextPath()%>/home">Quay về Trang Chủ</a>
         </div>
     </div>
 </body>
