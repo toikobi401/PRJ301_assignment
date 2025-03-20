@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Sách Đơn Xin Nghỉ Phép</title>
+    <title>Danh Sách Đơn Xin Nghỉ Phép Của Bạn</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -113,6 +113,34 @@
             text-decoration: underline;
         }
 
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #1a73e8;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .pagination .current {
+            background-color: #1a73e8;
+            color: white;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: 1px solid #1a73e8;
+            border-radius: 5px;
+        }
+
         @media (max-width: 768px) {
             table, th, td {
                 display: block;
@@ -172,6 +200,28 @@
                         </c:forEach>
                     </tbody>
                 </table>
+
+                <!-- Phân trang -->
+                <div class="pagination">
+                    <c:if test="${currentPage > 1}">
+                        <a href="<%=request.getContextPath()%>/LeaveRequest/list?page=${currentPage - 1}">Trang trước</a>
+                    </c:if>
+
+                    <c:forEach begin="1" end="${totalPages}" var="i">
+                        <c:choose>
+                            <c:when test="${i == currentPage}">
+                                <span class="current">${i}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<%=request.getContextPath()%>/LeaveRequest/list?page=${i}">${i}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <a href="<%=request.getContextPath()%>/LeaveRequest/list?page=${currentPage + 1}">Trang sau</a>
+                    </c:if>
+                </div>
             </c:when>
             <c:otherwise>
                 <p class="no-data">Hiện tại không có đơn xin nghỉ phép nào.</p>

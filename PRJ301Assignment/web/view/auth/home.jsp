@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="data.User" %>
+<%@ page import="data.Role" %>
 <html>
 <head>
     <title>Home</title>
@@ -50,7 +51,7 @@
             User userObj = (User) session.getAttribute("user");
             if (userObj != null) {
         %>
-                <p>UserID: <%= userObj.getUserID() %></p> <!-- Hiển thị userID từ session -->
+                <p>UserID: <%= userObj.getUserID() %></p>
                 <p>Full Name: <%= userObj.getFullName() != null ? userObj.getFullName() : "Not available" %></p>
         <%
             } else {
@@ -63,8 +64,23 @@
     <div class="container">
         <div class="menu">
             <a href="<%=request.getContextPath()%>/LeaveRequest/create">Tạo đơn xin nghỉ</a>
-            <a href="<%=request.getContextPath()%>/LeaveRequest/manage">Duyệt đơn xin nghỉ</a>
             <a href="<%=request.getContextPath()%>/LeaveRequest/list">Xem danh sách đơn xin nghỉ của bạn</a>
+        <%
+            if (userObj != null) {
+                boolean canManage = false;
+                for (Role role : userObj.getRoles()) {
+                    if (role.getRoleID() == 1 || role.getRoleID() == 2) {
+                        canManage = true;
+                        break;
+                    }
+                }
+                if (canManage) {
+        %>
+                    <a href="<%=request.getContextPath()%>/LeaveRequest/manage">Duyệt đơn xin nghỉ</a>
+        <%
+                }
+            }
+        %>
         </div>
     </div>
 </body>

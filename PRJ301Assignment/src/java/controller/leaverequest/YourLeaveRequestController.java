@@ -11,8 +11,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
 public class YourLeaveRequestController extends HttpServlet {
+
+    private static final int PAGE_SIZE = 5; // Số bản ghi trên mỗi trang
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -32,14 +33,36 @@ public class YourLeaveRequestController extends HttpServlet {
 
         // Lấy UserID từ đối tượng User
         int userId = user.getUserID();
-        // Gọi eaveRequestDBContext để lấy danh sách đơn xin nghỉ
+        // Gọi LeaveRequestDBContext để lấy danh sách đơn xin nghỉ
         LeaveRequestDBContext db = new LeaveRequestDBContext();
-        ArrayList<LeaveRequest> leaveRequests = db.list(userId);
+        ArrayList<LeaveRequest> allRequests = db.list(userId);
         System.out.println("Danh sách đơn xin nghỉ phép của UserID: " + userId);
 
-        // Đặt danh sách vào request attribute để JSP sử dụng
+        // Tính toán phân trang
+        int totalRecords = allRequests.size();
+        int totalPages = (int) Math.ceil((double) totalRecords / PAGE_SIZE);
+        int currentPage = 1;
+        try {
+            currentPage = Integer.parseInt(request.getParameter("page"));
+        } catch (NumberFormatException e) {
+            currentPage = 1;
+        }
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        // Lấy danh sách bản ghi cho trang hiện tại
+        int start = (currentPage - 1) * PAGE_SIZE;
+        int end = Math.min(start + PAGE_SIZE, totalRecords);
+        ArrayList<LeaveRequest> leaveRequests = new ArrayList<>();
+        for (int i = start; i < end; i++) {
+            leaveRequests.add(allRequests.get(i));
+        }
+
+        // Đặt dữ liệu vào request attribute để JSP sử dụng
         request.setAttribute("leaveRequests", leaveRequests);
-        
+        request.setAttribute("currentPage", currentPage);
+        request.setAttribute("totalPages", totalPages);
+
         // Chuyển tiếp đến yourleavereq.jsp
         request.getRequestDispatcher("/view/function/yourleavereq.jsp").forward(request, response);
     }
@@ -49,4 +72,4 @@ public class YourLeaveRequestController extends HttpServlet {
         // Nếu cần xử lý POST, có thể thêm logic ở đây
         doGet(request, response); // Mặc định gọi lại doGet
     }
-}   
+}

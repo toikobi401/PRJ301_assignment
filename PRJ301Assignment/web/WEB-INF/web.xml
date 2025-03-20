@@ -12,13 +12,17 @@
         <servlet-name>UpdateLeaveRequestController</servlet-name>
         <servlet-class>controller.leaverequest.UpdateLeaveRequestController</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ApproveLeaveRequestController</servlet-name>
+        <servlet-class>controller.leaverequest.ApproveLeaveRequestController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RejectLeaveRequestController</servlet-name>
+        <servlet-class>controller.leaverequest.RejectLeaveRequestController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ManageRequestServletController</servlet-name>
         <url-pattern>/LeaveRequest/manage</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>EditLeaveRequestServlet</servlet-name>
-        <url-pattern>/LeaveRequest/edit</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>YourLeaveRequestController</servlet-name>
@@ -31,6 +35,14 @@
     <servlet-mapping>
         <servlet-name>UpdateLeaveRequestController</servlet-name>
         <url-pattern>/LeaveRequest/update</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApproveLeaveRequestController</servlet-name>
+        <url-pattern>/LeaveRequest/approve</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RejectLeaveRequestController</servlet-name>
+        <url-pattern>/LeaveRequest/reject</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>view/auth/login.html</welcome-file>
@@ -54,10 +66,6 @@
     <servlet>
         <servlet-name>ManageRequestServletController</servlet-name>
         <servlet-class>controller.leaverequest.ManageRequestServletController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>EditLeaveRequestServlet</servlet-name>
-        <servlet-class>controller.leaverequest.EditLeaveRequestServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Test</servlet-name>
