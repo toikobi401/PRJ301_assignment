@@ -11,6 +11,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
+import java.util.Map;
 
 public class ManageRequestServletController extends BaseRequiredAuthenticationController {
 
@@ -83,13 +84,16 @@ public class ManageRequestServletController extends BaseRequiredAuthenticationCo
             return;
         }
 
+        // Lấy ánh xạ UserID với FullName
+        Map<Integer, String> userFullNameMap = leaveDB.getUserFullNameMap();
+
         // Lấy danh sách bản ghi cho trang hiện tại
         int start = (currentPage - 1) * PAGE_SIZE;
         int end = Math.min(start + PAGE_SIZE, totalRecords);
         for (int i = start; i < end; i++) {
             LeaveRequest lr = allPendingRequests.get(i);
-            User requester = userDB.newget(lr.getUserID());
-            leaveRequestsWithUser.add(new Object[]{lr, requester != null ? requester.getFullName() : "Unknown"});
+            String fullName = userFullNameMap.get(lr.getUserID());
+            leaveRequestsWithUser.add(new Object[]{lr, fullName != null ? fullName : "Unknown"});
         }
 
         // Đưa dữ liệu vào request

@@ -7,7 +7,6 @@ import data.LeaveRequest;
 import data.LeaveStatus;
 import data.Role;
 import data.User;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,6 +65,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                      SELECT 
                            lr.[RequestID],
                            lr.[UserID],
+                           u.[FullName],
                            lr.[FromDate],
                            lr.[ToDate],
                            lr.[Reason],
@@ -78,6 +78,8 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                       FROM [AssignmentDB].[dbo].[LeaveRequest] as lr
                       LEFT JOIN [AssignmentDB].[dbo].[LeaveStatus] as ls
                       ON ls.StatusID = lr.StatusID
+                      LEFT JOIN [AssignmentDB].[dbo].[User] as u
+                      ON lr.UserID = u.UserID
                       WHERE lr.[UserID] = ?
                      """;
         try {
@@ -171,6 +173,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
     @Override
     public ArrayList<LeaveRequest> list() {
         ArrayList<LeaveRequest> requests = new ArrayList<>();
+        Map<Integer, String> userFullNameMap = new HashMap<>();
         if (connection == null) {
             throw new RuntimeException("Database connection is not initialized.");
         }
@@ -178,6 +181,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                  SELECT 
                        lr.[RequestID],
                        lr.[UserID],
+                       u.[FullName],
                        lr.[FromDate],
                        lr.[ToDate],
                        lr.[Reason],
@@ -190,6 +194,8 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                   FROM [AssignmentDB].[dbo].[LeaveRequest] as lr
                   LEFT JOIN [AssignmentDB].[dbo].[LeaveStatus] as ls
                   ON ls.StatusID = lr.StatusID
+                  LEFT JOIN [AssignmentDB].[dbo].[User] as u
+                  ON lr.UserID = u.UserID
                  """;
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
@@ -213,9 +219,16 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                 lr.setUpdateAt(rs.getTimestamp("UpdatedAt"));
 
                 requests.add(lr);
+                userFullNameMap.put(rs.getInt("UserID"), rs.getString("FullName"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        // Lưu userFullNameMap vào request để sử dụng trong JSP
+        if (!requests.isEmpty()) {
+            // Lưu userFullNameMap vào một thuộc tính tĩnh hoặc truyền qua một cơ chế khác
+            // Ở đây, chúng ta sẽ truyền qua servlet
         }
         return requests;
     }
@@ -233,6 +246,7 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                      SELECT 
                            lr.[RequestID],
                            lr.[UserID],
+                           u.[FullName],
                            lr.[FromDate],
                            lr.[ToDate],
                            lr.[Reason],
@@ -245,6 +259,8 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
                       FROM [AssignmentDB].[dbo].[LeaveRequest] as lr
                       LEFT JOIN [AssignmentDB].[dbo].[LeaveStatus] as ls
                       ON ls.StatusID = lr.StatusID
+                      LEFT JOIN [AssignmentDB].[dbo].[User] as u
+                      ON lr.UserID = u.UserID
                       WHERE lr.[RequestID] = ?
                      """;
         try {
@@ -276,5 +292,23 @@ public class LeaveRequestDBContext extends DBContext<LeaveRequest> {
             Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
+    }
+
+    // Phương thức để lấy ánh xạ UserID với FullName
+    public Map<Integer, String> getUserFullNameMap() {
+        Map<Integer, String> userFullNameMap = new HashMap<>();
+        String sql = """
+                     SELECT UserID, FullName
+                     FROM [AssignmentDB].[dbo].[User]
+                     """;
+        try (PreparedStatement stm = connection.prepareStatement(sql)) {
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                userFullNameMap.put(rs.getInt("UserID"), rs.getString("FullName"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LeaveRequestDBContext.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return userFullNameMap;
     }
 }

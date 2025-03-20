@@ -1,225 +1,165 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Xét Duyệt Đơn Xin Nghỉ Phép</title>
+    <title>Quản Lý Đơn Xin Nghỉ</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             background-color: #f0f2f5;
             margin: 0;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
         }
-
         .container {
             background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            width: 100%;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             max-width: 1200px;
+            margin: 0 auto;
         }
-
         h2 {
             text-align: center;
             color: #1a73e8;
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
+            margin-bottom: 20px;
         }
-
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 15px;
+            margin-bottom: 20px;
         }
-
         th, td {
-            padding: 15px;
+            padding: 12px;
             text-align: left;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #ddd;
         }
-
         th {
             background-color: #1a73e8;
             color: white;
-            font-weight: 600;
-            text-transform: uppercase;
         }
-
         tr:hover {
-            background-color: #f5f7fa;
+            background-color: #f5f5f5;
         }
-
-        .no-data {
-            text-align: center;
-            color: #666;
-            padding: 30px;
-            font-size: 16px;
+        .status-pending {
+            color: #ff9800;
+            font-weight: bold;
         }
-
+        /* Đảm bảo cột Hành Động có đủ chiều rộng */
+        th:last-child, td:last-child {
+            width: 150px; /* Điều chỉnh chiều rộng cột Hành Động */
+            text-align: center; /* Căn giữa các nút */
+        }
         .action-buttons {
             display: flex;
-            gap: 10px;
+            justify-content: center;
+            gap: 10px; /* Khoảng cách giữa các nút */
+            flex-wrap: nowrap; /* Không cho phép xuống dòng */
         }
-
         .btn {
             padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
+            border-radius: 4px;
             text-decoration: none;
             color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 14px;
+            display: inline-block; /* Đảm bảo nút hiển thị đúng */
         }
-
         .btn-approve {
-            background-color: #2a9d8f;
+            background-color: #4CAF50;
         }
-
         .btn-approve:hover {
-            background-color: #21867a;
+            background-color: #45a049;
         }
-
         .btn-reject {
             background-color: #e63946;
         }
-
         .btn-reject:hover {
             background-color: #d00000;
         }
-
+        .pagination {
+            text-align: center;
+        }
+        .pagination a {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: #1a73e8;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+            border-radius: 4px;
+        }
+        .pagination a.active {
+            background-color: #1a73e8;
+            color: white;
+            border: 1px solid #1a73e8;
+        }
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
         .back-link {
-            display: block;
             text-align: center;
             margin-top: 20px;
-            font-size: 16px;
         }
-
         .back-link a {
             color: #1a73e8;
             text-decoration: none;
         }
-
         .back-link a:hover {
             text-decoration: underline;
-        }
-
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .pagination a {
-            color: #1a73e8;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 0 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .pagination a:hover {
-            background-color: #1a73e8;
-            color: white;
-        }
-
-        .pagination .current {
-            background-color: #1a73e8;
-            color: white;
-            padding: 8px 12px;
-            margin: 0 5px;
-            border: 1px solid #1a73e8;
-            border-radius: 5px;
-        }
-
-        @media (max-width: 768px) {
-            table, th, td {
-                display: block;
-                width: 100%;
-            }
-            th, td {
-                padding: 10px;
-            }
-            .action-buttons {
-                justify-content: center;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Danh Sách Đơn Xin Nghỉ Phép Đang Chờ Duyệt</h2>
-        <c:choose>
-            <c:when test="${not empty leaveRequests}">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID Đơn</th>
-                            <th>Họ Tên</th>
-                            <th>Từ Ngày</th>
-                            <th>Đến Ngày</th>
-                            <th>Lý Do</th>
-                            <th>Trạng Thái</th>
-                            <th>Ngày Tạo</th>
-                            <th>Ngày Cập Nhật</th>
-                            <th>Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="requestWithUser" items="${leaveRequests}">
-                            <tr>
-                                <td>${requestWithUser[0].requestID}</td>
-                                <td>${requestWithUser[1]}</td>
-                                <td>${requestWithUser[0].fromDate}</td>
-                                <td>${requestWithUser[0].toDate}</td>
-                                <td>${requestWithUser[0].reason}</td>
-                                <td>${requestWithUser[0].leaveStatus != null ? requestWithUser[0].leaveStatus.statusName : 'Chưa xác định'}</td>
-                                <td>${requestWithUser[0].createAt}</td>
-                                <td>${requestWithUser[0].updateAt}</td>
-                                <td class="action-buttons">
-                                    <a href="<%=request.getContextPath()%>/LeaveRequest/approve?id=${requestWithUser[0].requestID}" class="btn btn-approve">Duyệt</a>
-                                    <a href="<%=request.getContextPath()%>/LeaveRequest/reject?id=${requestWithUser[0].requestID}" class="btn btn-reject">Từ chối</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Đơn</th>
+                    <th>Họ Tên</th>
+                    <th>Từ Ngày</th>
+                    <th>Đến Ngày</th>
+                    <th>Lý Do</th>
+                    <th>Trạng Thái</th>
+                    <th>Ngày Tạo</th>
+                    <th>Ngày Cập Nhật</th>
+                    <th>Hành Động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <c:forEach var="requestWithUser" items="${leaveRequests}">
+                    <c:set var="request" value="${requestWithUser[0]}" />
+                    <c:set var="fullName" value="${requestWithUser[1]}" />
+                    <tr>
+                        <td>${request.requestID}</td>
+                        <td>${fullName}</td>
+                        <td><fmt:formatDate value="${request.fromDate}" pattern="yyyy-MM-dd"/></td>
+                        <td><fmt:formatDate value="${request.toDate}" pattern="yyyy-MM-dd"/></td>
+                        <td>${request.reason}</td>
+                        <td class="status-pending">${request.leaveStatus.statusName}</td>
+                        <td><fmt:formatDate value="${request.createAt}" pattern="yyyy-MM-dd HH:mm:ss.SSS"/></td>
+                        <td><fmt:formatDate value="${request.updateAt}" pattern="yyyy-MM-dd HH:mm:ss.SSS"/></td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="<%=request.getContextPath()%>/LeaveRequest/approve?id=${request.requestID}" class="btn btn-approve">Duyệt</a>
+                                <a href="<%=request.getContextPath()%>/LeaveRequest/reject?id=${request.requestID}" class="btn btn-reject">Từ chối</a>
+                            </div>
+                        </td>
+                    </tr>
+                </c:forEach>
+            </tbody>
+        </table>
 
-                <!-- Phân trang -->
-                <div class="pagination">
-                    <c:if test="${currentPage > 1}">
-                        <a href="<%=request.getContextPath()%>/LeaveRequest/manage?page=${currentPage - 1}">Trang trước</a>
-                    </c:if>
+        <div class="pagination">
+            <c:if test="${totalPages > 0}">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <a href="<%=request.getContextPath()%>/LeaveRequest/manage?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
+                </c:forEach>
+            </c:if>
+        </div>
 
-                    <c:forEach begin="1" end="${totalPages}" var="i">
-                        <c:choose>
-                            <c:when test="${i == currentPage}">
-                                <span class="current">${i}</span>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="<%=request.getContextPath()%>/LeaveRequest/manage?page=${i}">${i}</a>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-
-                    <c:if test="${currentPage < totalPages}">
-                        <a href="<%=request.getContextPath()%>/LeaveRequest/manage?page=${currentPage + 1}">Trang sau</a>
-                    </c:if>
-                </div>
-            </c:when>
-            <c:otherwise>
-                <p class="no-data">Hiện tại không có đơn xin nghỉ phép nào cần xét duyệt.</p>
-            </c:otherwise>
-        </c:choose>
         <div class="back-link">
             <a href="<%=request.getContextPath()%>/home">Quay về Trang Chủ</a>
         </div>
