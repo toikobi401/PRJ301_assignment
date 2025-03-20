@@ -1,4 +1,4 @@
-    <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>YourLeaveRequestController</servlet-name>
@@ -36,10 +36,26 @@
         <servlet-name>UserWorkingDetailController</servlet-name>
         <servlet-class>controller.agenda.UserWorkingDetailController</servlet-class>
     </servlet>
-    <servlet-mapping>
+    <servlet>
+        <servlet-name>Test</servlet-name>
+        <servlet-class>controller.Test</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BaseRequireAuthenticationController</servlet-name>
+        <servlet-class>controller.authentication.BaseRequireAuthenticationController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginController</servlet-name>
+        <servlet-class>controller.authentication.LoginController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CreateLeaveRequestController</servlet-name>
+        <servlet-class>controller.leaverequest.CreateLeaveRequestController</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ManageRequestServletController</servlet-name>
-        <url-pattern>/LeaveRequest/manage</url-pattern>
-    </servlet-mapping>
+        <servlet-class>controller.leaverequest.ManageRequestServletController</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>YourLeaveRequestController</servlet-name>
         <url-pattern>/LeaveRequest/list</url-pattern>
@@ -76,29 +92,6 @@
         <servlet-name>UserWorkingDetailController</servlet-name>
         <url-pattern>/agenda/userworkingdetail</url-pattern>
     </servlet-mapping>
-    <welcome-file-list>
-        <welcome-file>view/auth/login.html</welcome-file>
-    </welcome-file-list>
-    <servlet>
-        <servlet-name>Test</servlet-name>
-        <servlet-class>controller.Test</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>BaseRequireAuthenticationController</servlet-name>
-        <servlet-class>controller.authentication.BaseRequireAuthenticationController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LoginController</servlet-name>
-        <servlet-class>controller.authentication.LoginController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>CreateLeaveRequestController</servlet-name>
-        <servlet-class>controller.leaverequest.CreateLeaveRequestController</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ManageRequestServletController</servlet-name>
-        <servlet-class>controller.leaverequest.ManageRequestServletController</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>Test</servlet-name>
         <url-pattern>/test</url-pattern>
@@ -115,4 +108,11 @@
         <servlet-name>CreateLeaveRequestController</servlet-name>
         <url-pattern>/LeaveRequest/create</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageRequestServletController</servlet-name>
+        <url-pattern>/LeaveRequest/manage</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>view/auth/login.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>
