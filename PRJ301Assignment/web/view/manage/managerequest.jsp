@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danh Sách Đơn Xin Nghỉ Phép</title>
+    <title>Xét Duyệt Đơn Xin Nghỉ Phép</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
@@ -65,38 +65,6 @@
             font-size: 16px;
         }
 
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            text-decoration: none;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-delete {
-            background-color: #e63946;
-        }
-
-        .btn-delete:hover {
-            background-color: #d00000;
-        }
-
-        .btn-update {
-            background-color: #2a9d8f;
-        }
-
-        .btn-update:hover {
-            background-color: #21867a;
-        }
-
         .back-link {
             display: block;
             text-align: center;
@@ -121,60 +89,45 @@
             th, td {
                 padding: 10px;
             }
-            .action-buttons {
-                justify-content: center;
-            }
         }
     </style>
-    <script>
-        function deleteLeaveRequest(requestID) {
-            if (confirm("Bạn có chắc chắn muốn xóa đơn xin nghỉ phép ?")) {
-                window.location.href = "<%=request.getContextPath()%>/LeaveRequest/delete?requestID=" + requestID;
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="container">
-        <h2>Danh Sách Đơn Xin Nghỉ Phép Của Bạn</h2>
+        <h2>Danh Sách Đơn Xin Nghỉ Phép Đang Chờ Duyệt</h2>
         <c:choose>
             <c:when test="${not empty leaveRequests}">
                 <table>
                     <thead>
                         <tr>
+                            <th>ID Đơn</th>
+                            <th>Họ Tên</th>
                             <th>Từ Ngày</th>
                             <th>Đến Ngày</th>
                             <th>Lý Do</th>
                             <th>Trạng Thái</th>
-                            <th>Mô Tả</th>
-                            <th>Người Phê Duyệt</th>
                             <th>Ngày Tạo</th>
                             <th>Ngày Cập Nhật</th>
-                            <th>Hành Động</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach var="request" items="${leaveRequests}">
+                        <c:forEach var="requestWithUser" items="${leaveRequests}">
                             <tr>
-                                <td>${request.fromDate}</td>
-                                <td>${request.toDate}</td>
-                                <td>${request.reason}</td>
-                                <td>${request.leaveStatus != null ? request.leaveStatus.statusName : 'Chưa xác định'}</td>
-                                <td>${request.leaveStatus != null ? request.leaveStatus.description : 'N/A'}</td>
-                                <td>${request.approvedBy != null ? request.approvedBy : 'Chưa phê duyệt'}</td>
-                                <td>${request.createAt}</td>
-                                <td>${request.updateAt}</td>
-                                <td class="action-buttons">
-                                    <button class="btn btn-delete" onclick="deleteLeaveRequest(${request.requestID})">Xóa</button>
-                                    <a href="<%=request.getContextPath()%>/LeaveRequest/update?requestID=${request.requestID}" class="btn btn-update">Cập Nhật</a>
-                                </td>
+                                <td>${requestWithUser.leaveRequest.requestID}</td>
+                                <td>${requestWithUser.userFullName}</td>
+                                <td>${requestWithUser.leaveRequest.fromDate}</td>
+                                <td>${requestWithUser.leaveRequest.toDate}</td>
+                                <td>${requestWithUser.leaveRequest.reason}</td>
+                                <td>${requestWithUser.leaveRequest.leaveStatus != null ? requestWithUser.leaveRequest.leaveStatus.statusName : 'Chưa xác định'}</td>
+                                <td>${requestWithUser.leaveRequest.createAt}</td>
+                                <td>${requestWithUser.leaveRequest.updateAt}</td>
                             </tr>
                         </c:forEach>
                     </tbody>
                 </table>
             </c:when>
             <c:otherwise>
-                <p class="no-data">Hiện tại không có đơn xin nghỉ phép nào.</p>
+                <p class="no-data">Hiện tại không có đơn xin nghỉ phép nào cần xét duyệt.</p>
             </c:otherwise>
         </c:choose>
         <div class="back-link">

@@ -5,7 +5,7 @@ import dal.DBContext;
 import dal.RoleDBContext;
 import dal.UserDBContext;
 import dal.DepartmentDBContext;
-import dal.UserRoleDBContext;
+
 
 import data.Role;
 import data.User;
@@ -50,14 +50,14 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             DBContext<User> userDB = new UserDBContext();
         DBContext<Role> roleDB = new RoleDBContext();
         DBContext<Department> depDB = new DepartmentDBContext();
-        DBContext<UserRole> userroleDB = new UserRoleDBContext();
+
 
         
 
         List<User> users = userDB.list();
         List<Role> roles = roleDB.list();
         List<Department> deps = depDB.list();
-        List<UserRole> userroles = userroleDB.list();
+
 
 
 
@@ -92,11 +92,6 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response)
             }
             out.println("</ul>");
             
-            out.println();
-            out.println("<ul>");
-            for (UserRole userrole : userroles) {
-                out.println("<li>" + userrole.getUserRoleID()+ " - " + userrole.getUserID()+ " - " + userrole.getRoleID() + "</li>");
-            }
 
             
             out.println("</body>");

@@ -1,4 +1,7 @@
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package controller.authentication;
 
 import data.Feature;
@@ -10,19 +13,26 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ *
+ * @author sonnt-local
+ */
 public abstract class BaseRequiredAuthenticationController extends HttpServlet {
 
     private User getAuthenticatedUser(HttpServletRequest req) {
+        
+
         return (User) req.getSession().getAttribute("user");
+        
     }
-    
-    private boolean isAuthorized(HttpServletRequest req, User u)
-    {
+
+    private boolean isAuthorized(HttpServletRequest req, User u) {
         String visit_url = req.getServletPath();
         for (Role role : u.getRoles()) {
             for (Feature feature : role.getFeatures()) {
-                if(feature.getFeatureURL().equals(visit_url))
+                if (feature.getFeatureURL().equals(visit_url)) {
                     return true;
+                }
             }
         }
         return false;

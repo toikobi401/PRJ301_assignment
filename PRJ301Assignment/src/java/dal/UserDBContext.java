@@ -1,5 +1,5 @@
 package dal;
-import data.User;
+import data.*;
 import java.util.*;
 import java.sql.*;
 import java.util.logging.Level;
@@ -9,49 +9,69 @@ import org.apache.tomcat.util.digester.ArrayStack;
 public class UserDBContext extends DBContext<User>{
 
 public User get(String username, String password) {
-       User  u = new User();
+        User user = null;
     if (connection == null) {
         throw new RuntimeException("Database connection is not initialized.");
     }
     String sql = """
-SELECT [UserID]
-                                             ,[Username]
-                                             ,[PasswordHash]
-                                             ,[FullName]
-                                             ,[DepartmentID]
-                                             ,[CreatedAt]
-                                             ,[UpdatedAt]
-                                             ,[IsActive]
-                                         FROM [AssignmentDB].[dbo].[User]
-                                 WHERE [Username] = ? and [PasswordHash] = ?
+                                        SELECT  u.[UserID]
+                                         ,[Username]
+                                         ,[PasswordHash]
+                                         ,[FullName]
+                                         ,[DepartmentID]
+                                         ,[CreatedAt]
+                                         ,[UpdatedAt]
+                                         ,[IsActive]
+                                   	  ,r.RoleID
+                                   	  ,r.RoleName
+                                   	  ,f.FeatureID
+                                   	  ,f.FeatureURL
+                                     FROM [AssignmentDB].[dbo].[User] as u
+                                     left join UserRole as ur on ur.UserID = u.UserID
+                                     left join Role as r on ur.RoleID = r.RoleID
+                                     left join FeatureRole as fr on fr.RoleID = r.RoleID
+                                     left join Feature as f on f.FeatureID = fr.FeatureID
+                                   where [Username] = ? and PasswordHash = ?
                  """;
     try {
         PreparedStatement stm = connection.prepareStatement(sql);
         stm.setString(1, username);
         stm.setString(2, password);
         ResultSet rs = stm.executeQuery();
+        
+        Role current_role = new Role();
+        current_role.setRoleID(-1);
         while (rs.next()) {
-            // Populate User object...
-                int UserID = rs.getInt("UserID");
-                String Username = rs.getString("UserName");
-                String PasswordHash = rs.getString("PasswordHash");
-                String FullName = rs.getString("FullName");
-                int DepartmentID = rs.getInt("DepartmentID");
-                Timestamp CreatedAt = rs.getTimestamp("CreatedAt");
-                Timestamp UpdateAt = rs.getTimestamp("UpdatedAt");
-                boolean IsActive = rs.getBoolean("IsActive");
+        
+       
                 
-                
-                u.setUserID(UserID);
-                u.setUsername(Username);
-                u.setPasswordHash(PasswordHash);
-                u.setFullName(FullName);
-                u.setDepartmentID(DepartmentID);
-                u.setCreatedAt(CreatedAt);
-                u.setUpdateAt(UpdateAt);
-                u.setIsActive(IsActive);
-               
-                
+                if(user == null){
+                    user = new User();
+                    user.setUserID(rs.getInt("UserID"));
+                    user.setUsername(username);
+                    user.setFullName(rs.getString("FullName"));
+                    user.setPasswordHash(password);
+                    user.setDepartmentID(rs.getInt("DepartmentID"));
+                    user.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                    user.setUpdateAt(rs.getTimestamp("UpdatedAt"));
+                    user.setIsActive(rs.getBoolean("IsActive"));
+                  }
+                int roleId = rs.getInt("RoleID");
+                if(roleId != 0 && roleId != current_role.getRoleID()){
+                    current_role = new Role();
+                    current_role.setRoleID(roleId);
+                    current_role.setRoleName(rs.getString("RoleName"));
+                    user.getRoles().add(current_role);
+                    current_role.getUsers().add(user);
+                }
+                int featureId = rs.getInt("FeatureID");
+                if (featureId != 0){
+                    Feature f = new Feature();
+                    f.setFeatureID(featureId);
+                    f.setFeatureURL(rs.getString("FeatureURL"));
+                    current_role.getFeatures().add(f);
+                    f.getRoles().add(current_role);
+                }
         }
     } catch (SQLException ex) {
         Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
@@ -63,7 +83,7 @@ SELECT [UserID]
                Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, null, ex);
            }
     }
-     return u;
+     return user;
     }
     
     
@@ -124,11 +144,7 @@ public ArrayList<User> list() {
     return user;
 }
 
-    @Override
-    public User get(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+    
     @Override
     public void insert(User model) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -141,6 +157,11 @@ public ArrayList<User> list() {
 
     @Override
     public void delete(User model) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public User get(int id) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     

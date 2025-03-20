@@ -62,8 +62,8 @@
     </div>
     <div class="container">
         <div class="menu">
-            <a href="view/function/leaverequest.jsp">Tạo đơn xin nghỉ</a>
-            <a href="view/function/managerequest.jsp">Duyệt đơn xin nghỉ</a>
+            <a href="<%=request.getContextPath()%>/LeaveRequest/create">Tạo đơn xin nghỉ</a>
+            <a href="<%=request.getContextPath()%>/LeaveRequest/manage">Duyệt đơn xin nghỉ</a>
             <a href="<%=request.getContextPath()%>/LeaveRequest/list">Xem danh sách đơn xin nghỉ của bạn</a>
         </div>
     </div>

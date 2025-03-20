@@ -6,7 +6,6 @@ public class UserRole {
     
     private int RoleID;
     private int UserID;
-    private int UserRoleID;
 
     public int getRoleID() {
         return RoleID;
@@ -24,12 +23,5 @@ public class UserRole {
         this.UserID = UserID;
     }
 
-    public int getUserRoleID() {
-        return UserRoleID;
-    }
-
-    public void setUserRoleID(int UserRoleID) {
-        this.UserRoleID = UserRoleID;
-    }
 
 }
