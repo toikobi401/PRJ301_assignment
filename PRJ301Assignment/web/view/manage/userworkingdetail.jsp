@@ -207,12 +207,13 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .start-date::after {
-            border-color: #28a745; /* Màu xanh cho ngày bắt đầu */
+        /* Màu sắc dựa trên trạng thái phê duyệt */
+        .approved::after {
+            border-color: #28a745; /* Màu xanh lá cho đơn đã duyệt */
         }
 
-        .end-date::after {
-            border-color: #dc3545; /* Màu đỏ cho ngày kết thúc */
+        .not-approved::after {
+            border-color: #ff9800; /* Màu cam cho đơn chưa duyệt */
         }
 
         .content h4 {
@@ -319,18 +320,23 @@
                     <h3>Timeline Đơn Xin Nghỉ Phép</h3>
                     <div class="timeline">
                         <c:forEach var="request" items="${userWorkingDetail.leaveRequests}" varStatus="loop">
+                            <!-- Xác định class dựa trên trạng thái phê duyệt -->
+                            <c:set var="statusClass" value="${request.leaveStatus != null && request.leaveStatus.statusName == 'Approved' ? 'approved' : 'not-approved'}" />
+
                             <!-- Ngày bắt đầu -->
-                            <div class="timeline-item left start-date">
+                            <div class="timeline-item left ${statusClass}">
                                 <div class="content">
                                     <h4>Ngày Bắt Đầu: <fmt:formatDate value="${request.fromDate}" pattern="dd/MM/yyyy"/></h4>
                                     <p>Lý do: ${request.reason}</p>
+                                    <p>Trạng thái: ${request.leaveStatus != null ? request.leaveStatus.statusName : 'Chưa xác định'}</p>
                                 </div>
                             </div>
                             <!-- Ngày kết thúc -->
-                            <div class="timeline-item right end-date">
+                            <div class="timeline-item right ${statusClass}">
                                 <div class="content">
                                     <h4>Ngày Kết Thúc: <fmt:formatDate value="${request.toDate}" pattern="dd/MM/yyyy"/></h4>
                                     <p>Lý do: ${request.reason}</p>
+                                    <p>Trạng thái: ${request.leaveStatus != null ? request.leaveStatus.statusName : 'Chưa xác định'}</p>
                                 </div>
                             </div>
                         </c:forEach>
