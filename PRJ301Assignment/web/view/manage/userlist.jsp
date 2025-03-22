@@ -24,25 +24,54 @@
             border-radius: 12px;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 600px;
-            text-align: center;
+            max-width: 800px;
         }
 
         h2 {
+            text-align: center;
             color: #1a73e8;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-size: 28px;
             font-weight: 600;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .search-form input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .search-form button {
+            padding: 10px 20px;
+            margin-left: 10px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-form button:hover {
+            background-color: #1557b0;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 20px;
+            font-size: 15px;
         }
 
         th, td {
-            padding: 12px;
+            padding: 15px;
             text-align: left;
             border-bottom: 1px solid #e0e0e0;
         }
@@ -58,63 +87,91 @@
             background-color: #f5f7fa;
         }
 
-        .btn {
-            padding: 10px 20px;
-            border-radius: 6px;
+        .no-data {
+            text-align: center;
+            color: #666;
+            padding: 30px;
             font-size: 16px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
             text-decoration: none;
             color: white;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s;
-            display: inline-block;
         }
 
-        .btn-action {
+        .btn-view {
             background-color: #1a73e8;
         }
 
-        .btn-action:hover {
+        .btn-view:hover {
             background-color: #1557b0;
         }
 
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .back-link a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #1a73e8;
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #1a73e8;
+            color: white;
+        }
+
+        .pagination .current {
+            background-color: #1a73e8;
+            color: white;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: 1px solid #1a73e8;
+            border-radius: 5px;
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-
-            .btn {
-                font-size: 14px;
-                padding: 8px 16px;
-            }
-
             table, th, td {
                 display: block;
                 width: 100%;
             }
-
             th, td {
                 padding: 10px;
-                text-align: center;
             }
-
-            th {
-                display: none; /* Ẩn tiêu đề trên mobile */
+            .search-form input[type="text"] {
+                width: 100%;
             }
-
-            td {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid #e0e0e0;
-            }
-
-            td:before {
-                content: attr(data-label);
-                font-weight: bold;
-                color: #34495e;
-                width: 50%;
-                text-align: left;
+            .search-form button {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
             }
         }
     </style>
@@ -122,24 +179,63 @@
 <body>
     <div class="container">
         <h2>Danh Sách User</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Tên User</th>
-                    <th>Hành Động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="user" items="${users}">
-                    <tr>
-                        <td data-label="Tên User">${user.fullName}</td>
-                        <td data-label="Hành Động">
-                            <a href="<%=request.getContextPath()%>/agenda/userworkingdetail?userId=${user.userID}" class="btn btn-action">Xem Chi Tiết</a>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
+
+        <!-- Form tìm kiếm -->
+        <form class="search-form" method="get" action="<%=request.getContextPath()%>/agenda/userlist">
+            <input type="text" name="search" placeholder="Nhập tên để tìm kiếm..." value="${param.search}">
+            <button type="submit">Tìm kiếm</button>
+        </form>
+
+        <c:choose>
+            <c:when test="${not empty users}">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tên User</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="user" items="${users}">
+                            <tr>
+                                <td>${user.fullName}</td>
+                                <td>
+                                    <a href="<%=request.getContextPath()%>/agenda/userworkingdetail?userId=${user.userID}" class="btn btn-view">Xem Chi Tiết</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+
+                <!-- Phân trang -->
+                <div class="pagination">
+                    <c:if test="${currentPage > 1}">
+                        <a href="<%=request.getContextPath()%>/agenda/userlist?page=${currentPage - 1}&search=${param.search}">Trang trước</a>
+                    </c:if>
+
+                    <c:forEach begin="1" end="${totalPages}" var="i">
+                        <c:choose>
+                            <c:when test="${i == currentPage}">
+                                <span class="current">${i}</span>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<%=request.getContextPath()%>/agenda/userlist?page=${i}&search=${param.search}">${i}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                    <c:if test="${currentPage < totalPages}">
+                        <a href="<%=request.getContextPath()%>/agenda/userlist?page=${currentPage + 1}&search=${param.search}">Trang sau</a>
+                    </c:if>
+                </div>
+            </c:when>
+            <c:otherwise>
+                <p class="no-data">Hiện tại không có user nào phù hợp với tìm kiếm.</p>
+            </c:otherwise>
+        </c:choose>
+        <div class="back-link">
+            <a href="<%=request.getContextPath()%>/home">Quay về Trang Chủ</a>
+        </div>
     </div>
 </body>
 </html>

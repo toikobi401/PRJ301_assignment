@@ -5,10 +5,49 @@ import java.util.*;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.tomcat.util.digester.ArrayStack;
 
 public class UserDBContext extends DBContext<User> {
-
+    
+    // Tìm kiếm người dùng theo tên (fullName chứa từ khóa)
+    public ArrayList<User> searchByName(String search) {
+        ArrayList<User> users = new ArrayList<>();
+        if (connection == null) {
+            throw new RuntimeException("Database connection is not initialized.");
+        }
+        String sql = """
+                SELECT [UserID]
+                      ,[Username]
+                      ,[PasswordHash]
+                      ,[FullName]
+                      ,[DepartmentID]
+                      ,[CreatedAt]
+                      ,[UpdatedAt]
+                      ,[IsActive]
+                  FROM [AssignmentDB].[dbo].[User]
+                  WHERE [FullName] LIKE ?
+                 """;
+        try {
+            PreparedStatement stm = connection.prepareStatement(sql);
+            stm.setString(1, "%" + search + "%"); // Tìm kiếm không phân biệt hoa thường
+            ResultSet rs = stm.executeQuery();
+            while (rs.next()) {
+                User u = new User();
+                u.setUserID(rs.getInt("UserID"));
+                u.setUsername(rs.getString("Username"));
+                u.setPasswordHash(rs.getString("PasswordHash"));
+                u.setFullName(rs.getString("FullName"));
+                u.setDepartmentID(rs.getInt("DepartmentID"));
+                u.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                u.setUpdateAt(rs.getTimestamp("UpdatedAt"));
+                u.setIsActive(rs.getBoolean("IsActive"));
+                users.add(u);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi tìm kiếm user: " + ex.getMessage(), ex);
+        }
+        return users;
+    }
+    
     public User get(String username, String password) {
         User user = null;
         if (connection == null) {
@@ -79,49 +118,40 @@ public class UserDBContext extends DBContext<User> {
 
     @Override
     public ArrayList<User> list() {
-        ArrayList<User> user = new ArrayStack<>();
+        ArrayList<User> users = new ArrayList<>();
         if (connection == null) {
             throw new RuntimeException("Database connection is not initialized.");
         }
         String sql = """
                 SELECT [UserID]
-                             ,[Username]
-                             ,[PasswordHash]
-                             ,[FullName]
-                             ,[DepartmentID]
-                             ,[CreatedAt]
-                             ,[UpdatedAt]
-                             ,[IsActive]
-                         FROM [AssignmentDB].[dbo].[User]
+                      ,[Username]
+                      ,[PasswordHash]
+                      ,[FullName]
+                      ,[DepartmentID]
+                      ,[CreatedAt]
+                      ,[UpdatedAt]
+                      ,[IsActive]
+                  FROM [AssignmentDB].[dbo].[User]
                  """;
         try {
             PreparedStatement stm = connection.prepareStatement(sql);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                int UserID = rs.getInt("UserID");
-                String UserName = rs.getString("UserName");
-                String PasswordHash = rs.getString("PasswordHash");
-                String FullName = rs.getString("FullName");
-                int DepartmentID = rs.getInt("DepartmentID");
-                Timestamp CreatedAt = rs.getTimestamp("CreatedAt");
-                Timestamp UpdateAt = rs.getTimestamp("UpdatedAt");
-                boolean IsActive = rs.getBoolean("IsActive");
-
                 User u = new User();
-                u.setUserID(UserID);
-                u.setUsername(UserName);
-                u.setPasswordHash(PasswordHash);
-                u.setFullName(FullName);
-                u.setDepartmentID(DepartmentID);
-                u.setCreatedAt(CreatedAt);
-                u.setUpdateAt(UpdateAt);
-                u.setIsActive(IsActive);
-                user.add(u);
+                u.setUserID(rs.getInt("UserID"));
+                u.setUsername(rs.getString("Username"));
+                u.setPasswordHash(rs.getString("PasswordHash"));
+                u.setFullName(rs.getString("FullName"));
+                u.setDepartmentID(rs.getInt("DepartmentID"));
+                u.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                u.setUpdateAt(rs.getTimestamp("UpdatedAt"));
+                u.setIsActive(rs.getBoolean("IsActive"));
+                users.add(u);
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserDBContext.class.getName()).log(Level.SEVERE, "Lỗi khi lấy danh sách user: " + ex.getMessage(), ex);
         }
-        return user;
+        return users;
     }
 
     public User newget(int id) {
