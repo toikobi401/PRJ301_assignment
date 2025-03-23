@@ -92,6 +92,14 @@
             font-size: 14px;
         }
 
+        .date-display {
+            color: #666;
+            font-size: 14px;
+            margin-top: -15px;
+            margin-bottom: 20px;
+            display: block;
+        }
+
         /* Responsive design */
         @media (max-width: 480px) {
             .form-container {
@@ -118,12 +126,45 @@
             
             <label for="fromDate">Từ ngày:</label>
             <input type="date" id="fromDate" name="fromDate" value="${param.fromDate}" required>
+            <span id="fromDateDisplay" class="date-display"></span>
             
             <label for="toDate">Đến ngày:</label>
             <input type="date" id="toDate" name="toDate" value="${param.toDate}" required>
+            <span id="toDateDisplay" class="date-display"></span>
             
             <input type="submit" value="Gửi Đơn Xin Nghỉ Phép">
         </form>
     </div>
+
+    <script>
+        // Hàm chuyển đổi định dạng ngày từ yyyy-MM-dd sang dd/MM/yyyy
+        function formatDateToVN(dateStr) {
+            if (!dateStr) return 'Chưa chọn ngày';
+            const date = new Date(dateStr);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        // Lấy các input và span hiển thị
+        const fromDateInput = document.getElementById('fromDate');
+        const fromDateDisplay = document.getElementById('fromDateDisplay');
+        const toDateInput = document.getElementById('toDate');
+        const toDateDisplay = document.getElementById('toDateDisplay');
+
+        // Hiển thị giá trị ban đầu (nếu có) theo format Việt Nam
+        fromDateDisplay.textContent = formatDateToVN(fromDateInput.value);
+        toDateDisplay.textContent = formatDateToVN(toDateInput.value);
+
+        // Xử lý khi người dùng chọn ngày
+        fromDateInput.addEventListener('change', function() {
+            fromDateDisplay.textContent = formatDateToVN(this.value);
+        });
+
+        toDateInput.addEventListener('change', function() {
+            toDateDisplay.textContent = formatDateToVN(this.value);
+        });
+    </script>
 </body>
 </html>

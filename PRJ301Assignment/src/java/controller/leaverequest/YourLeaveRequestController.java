@@ -47,9 +47,17 @@ public class YourLeaveRequestController extends HttpServlet {
         } catch (NumberFormatException e) {
             currentPage = 1;
         }
-        if (currentPage < 1) currentPage = 1;
-        if (currentPage > totalPages) currentPage = totalPages;
-
+        if (totalRecords == 0) {
+                        currentPage = 1; // Nếu không có bản ghi, đặt currentPage về 1
+                        totalPages = 0;  // Số trang là 0
+                    } else {
+                        if (currentPage < 1) {
+                            currentPage = 1;
+                        }
+                        if (currentPage > totalPages) {
+                            currentPage = totalPages;
+                        }
+                    }
         // Lấy danh sách bản ghi cho trang hiện tại
         int start = (currentPage - 1) * PAGE_SIZE;
         int end = Math.min(start + PAGE_SIZE, totalRecords);
