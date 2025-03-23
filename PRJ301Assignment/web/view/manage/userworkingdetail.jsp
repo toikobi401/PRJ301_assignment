@@ -207,13 +207,12 @@
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        /* Màu sắc dựa trên trạng thái phê duyệt */
         .approved::after {
-            border-color: #28a745; /* Màu xanh lá cho đơn đã duyệt */
+            border-color: #28a745;
         }
 
         .not-approved::after {
-            border-color: #ff9800; /* Màu cam cho đơn chưa duyệt */
+            border-color: #ff9800;
         }
 
         .content h4 {
@@ -264,6 +263,7 @@
         <h2>Chi Tiết Tình Hình Lao Động Của ${userWorkingDetail.user.fullName}</h2>
         <c:choose>
             <c:when test="${not empty userWorkingDetail.leaveRequests}">
+                <!-- Bảng hiển thị danh sách đơn xin nghỉ phép -->
                 <table>
                     <thead>
                         <tr>
@@ -298,7 +298,6 @@
                     <c:if test="${currentPage > 1}">
                         <a href="<%=request.getContextPath()%>/agenda/userworkingdetail?userId=${userWorkingDetail.user.userID}&page=${currentPage - 1}">Trang trước</a>
                     </c:if>
-
                     <c:forEach begin="1" end="${totalPages}" var="i">
                         <c:choose>
                             <c:when test="${i == currentPage}">
@@ -309,7 +308,6 @@
                             </c:otherwise>
                         </c:choose>
                     </c:forEach>
-
                     <c:if test="${currentPage < totalPages}">
                         <a href="<%=request.getContextPath()%>/agenda/userworkingdetail?userId=${userWorkingDetail.user.userID}&page=${currentPage + 1}">Trang sau</a>
                     </c:if>
@@ -320,11 +318,10 @@
                     <h3>Timeline Đơn Xin Nghỉ Phép</h3>
                     <div class="timeline">
                         <c:forEach var="request" items="${userWorkingDetail.leaveRequests}" varStatus="loop">
-                            <!-- Xác định class dựa trên trạng thái phê duyệt -->
                             <c:set var="statusClass" value="${request.leaveStatus != null && request.leaveStatus.statusName == 'Approved' ? 'approved' : 'not-approved'}" />
-
+                            
                             <!-- Ngày bắt đầu -->
-                            <div class="timeline-item left ${statusClass}">
+                            <div class="timeline-item ${loop.index % 2 == 0 ? 'left' : 'right'} ${statusClass}">
                                 <div class="content">
                                     <h4>Ngày Bắt Đầu: <fmt:formatDate value="${request.fromDate}" pattern="dd/MM/yyyy"/></h4>
                                     <p>Lý do: ${request.reason}</p>
@@ -332,7 +329,7 @@
                                 </div>
                             </div>
                             <!-- Ngày kết thúc -->
-                            <div class="timeline-item right ${statusClass}">
+                            <div class="timeline-item ${loop.index % 2 == 0 ? 'right' : 'left'} ${statusClass}">
                                 <div class="content">
                                     <h4>Ngày Kết Thúc: <fmt:formatDate value="${request.toDate}" pattern="dd/MM/yyyy"/></h4>
                                     <p>Lý do: ${request.reason}</p>

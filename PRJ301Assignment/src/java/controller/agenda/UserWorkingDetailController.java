@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class UserWorkingDetailController extends BaseRequiredAuthenticationController {
 
@@ -40,6 +42,15 @@ public class UserWorkingDetailController extends BaseRequiredAuthenticationContr
                 return;
             }
 
+            // Sắp xếp danh sách leaveRequests theo fromDate và toDate
+            ArrayList<LeaveRequest> leaveRequests = userWorkingDetail.getLeaveRequests();
+            if (leaveRequests != null) {
+                Collections.sort(leaveRequests, Comparator
+                    .comparing(LeaveRequest::getFromDate)
+                    .thenComparing(LeaveRequest::getToDate));
+                userWorkingDetail.setLeaveRequests(leaveRequests);
+            }
+
             ArrayList<LeaveRequest> allRequests = userWorkingDetail.getLeaveRequests();
             System.out.println("Tên user: " + userWorkingDetail.getUser().getFullName()); // Debug: Kiểm tra thông tin user
             System.out.println("Số lượng đơn xin nghỉ: " + (allRequests != null ? allRequests.size() : 0)); // Debug: Kiểm tra số lượng đơn
@@ -57,17 +68,17 @@ public class UserWorkingDetailController extends BaseRequiredAuthenticationContr
             if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
 
             // Lấy danh sách bản ghi cho trang hiện tại
-            ArrayList<LeaveRequest> leaveRequests = new ArrayList<>();
+            ArrayList<LeaveRequest> pageRequests = new ArrayList<>();
             if (allRequests != null && !allRequests.isEmpty()) {
                 int start = (currentPage - 1) * PAGE_SIZE;
                 int end = Math.min(start + PAGE_SIZE, totalRecords);
                 for (int i = start; i < end; i++) {
-                    leaveRequests.add(allRequests.get(i));
+                    pageRequests.add(allRequests.get(i));
                 }
             }
 
             // Cập nhật danh sách đơn xin nghỉ phép trong userWorkingDetail
-            userWorkingDetail.setLeaveRequests(leaveRequests);
+            userWorkingDetail.setLeaveRequests(pageRequests);
 
             req.setAttribute("userWorkingDetail", userWorkingDetail);
             req.setAttribute("currentPage", currentPage);
@@ -86,4 +97,5 @@ public class UserWorkingDetailController extends BaseRequiredAuthenticationContr
     protected void doPost(HttpServletRequest req, HttpServletResponse resp, User user) throws ServletException, IOException {
         doGet(req, resp); // Mặc định gọi lại doGet
     }
+
 }
