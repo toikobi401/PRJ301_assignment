@@ -3,69 +3,36 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Đăng Nhập</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .login-container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 300px;
-            text-align: center;
-        }
-        .login-container h2 {
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .login-container input[type="text"], 
-        .login-container input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-        .login-container input[type="submit"] {
-            width: 100%;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .login-container input[type="submit"]:hover {
-            background-color: #45a049;
-        }
-        .login-container .error {
-            color: #e63946;
-            font-size: 14px;
-            margin-top: 10px;
-        }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-container { background-color: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); width: 100%; max-width: 400px; }
+        h2 { color: #007bff; font-weight: 600; margin-bottom: 20px; }
+        .btn-custom { padding: 8px 16px; font-size: 14px; }
+        .btn-success-custom { background-color: #28a745; border-color: #28a745; }
+        .btn-success-custom:hover { background-color: #218838; border-color: #218838; }
+        .error-message { color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="login-container">
-        <h2>Đăng Nhập</h2>
+        <h2 class="text-center">Đăng Nhập</h2>
         <form action="<%=request.getContextPath()%>/login" method="post">
-            <input type="text" name="username" placeholder="Tên đăng nhập" required><br>
-            <input type="password" name="password" placeholder="Mật khẩu" required><br>
-            <input type="submit" value="Đăng Nhập">
+            <div class="mb-3">
+                <input type="text" class="form-control" name="username" placeholder="Tên đăng nhập" required>
+            </div>
+            <div class="mb-3">
+                <input type="password" class="form-control" name="password" placeholder="Mật khẩu" required>
+            </div>
+            <button type="submit" class="btn btn-success-custom btn-custom w-100">Đăng Nhập</button>
             <c:if test="${not empty error}">
-                <p class="error">${error}</p>
+                <div class="error-message">${error}</div>
             </c:if>
         </form>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

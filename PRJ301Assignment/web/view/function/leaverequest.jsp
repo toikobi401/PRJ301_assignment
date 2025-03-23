@@ -6,138 +6,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tạo Đơn Xin Nghỉ Phép</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f7f9;
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .form-container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .form-container h2 {
-            text-align: center;
-            color: #2c3e50;
-            margin-bottom: 25px;
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .form-container label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-            color: #34495e;
-        }
-
-        .form-container input[type="date"],
-        .form-container textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #dfe6e9;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 14px;
-            transition: border-color 0.3s ease;
-        }
-
-        .form-container input[type="date"]:focus,
-        .form-container textarea:focus {
-            border-color: #3498db;
-            outline: none;
-        }
-
-        .form-container textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .form-container input[type="submit"] {
-            width: 100%;
-            padding: 12px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background-color 0.3s ease;
-        }
-
-        .form-container input[type="submit"]:hover {
-            background-color: #2980b9;
-        }
-
-        .error-message {
-            color: #e74c3c;
-            background-color: #f9e1e1;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        .date-display {
-            color: #666;
-            font-size: 14px;
-            margin-top: -15px;
-            margin-bottom: 20px;
-            display: block;
-        }
-
-        /* Responsive design */
-        @media (max-width: 480px) {
-            .form-container {
-                padding: 20px;
-            }
-            .form-container h2 {
-                font-size: 20px;
-            }
-        }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Arial, sans-serif; }
+        .navbar-custom { background-color: #007bff; }
+        .navbar-custom .navbar-brand, .navbar-custom .nav-link { color: white; }
+        .container-custom { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 20px; margin-bottom: 20px; }
+        h2 { color: #007bff; font-weight: 600; margin-bottom: 20px; }
+        .btn-custom { padding: 8px 16px; font-size: 14px; }
+        .btn-primary-custom { background-color: #007bff; border-color: #007bff; }
+        .btn-primary-custom:hover { background-color: #0056b3; border-color: #0056b3; }
+        .error-message { color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        .date-display { color: #666; font-size: 14px; margin-top: 5px; }
+        footer { text-align: center; padding: 10px; background-color: #007bff; color: white; position: fixed; bottom: 0; width: 100%; }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Tạo Đơn Xin Nghỉ Phép</h2>
-        <!-- Hiển thị thông báo lỗi nếu có -->
-        <c:if test="${not empty errorMessage}">
-            <div class="error-message">
-                ${errorMessage}
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<%=request.getContextPath()%>/home">Quản Lý Nghỉ Phép</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/logout">Đăng Xuất</a>
+                    </li>
+                </ul>
             </div>
+        </div>
+    </nav>
+
+    <div class="container container-custom">
+        <h2 class="text-center">Tạo Đơn Xin Nghỉ Phép</h2>
+        <c:if test="${not empty errorMessage}">
+            <div class="error-message">${errorMessage}</div>
         </c:if>
         <form method="post" action="<%=request.getContextPath()%>/LeaveRequest/create">
-            <label for="reason">Lý do nghỉ phép:</label>
-            <textarea id="reason" name="reason" required placeholder="Nhập lý do nghỉ phép...">${param.reason}</textarea>
-            
-            <label for="fromDate">Từ ngày:</label>
-            <input type="date" id="fromDate" name="fromDate" value="${param.fromDate}" required>
-            <span id="fromDateDisplay" class="date-display"></span>
-            
-            <label for="toDate">Đến ngày:</label>
-            <input type="date" id="toDate" name="toDate" value="${param.toDate}" required>
-            <span id="toDateDisplay" class="date-display"></span>
-            
-            <input type="submit" value="Gửi Đơn Xin Nghỉ Phép">
+            <div class="mb-3">
+                <label for="reason" class="form-label">Lý do nghỉ phép:</label>
+                <textarea class="form-control" id="reason" name="reason" required placeholder="Nhập lý do nghỉ phép...">${param.reason}</textarea>
+            </div>
+            <div class="mb-3">
+                <label for="fromDate" class="form-label">Từ ngày:</label>
+                <input type="date" class="form-control" id="fromDate" name="fromDate" value="${param.fromDate}" required>
+                <span id="fromDateDisplay" class="date-display"></span>
+            </div>
+            <div class="mb-3">
+                <label for="toDate" class="form-label">Đến ngày:</label>
+                <input type="date" class="form-control" id="toDate" name="toDate" value="${param.toDate}" required>
+                <span id="toDateDisplay" class="date-display"></span>
+            </div>
+            <button type="submit" class="btn btn-primary-custom btn-custom w-100">Gửi Đơn Xin Nghỉ Phép</button>
         </form>
     </div>
 
+    <footer>
+        <p>&copy; 2025 Quản Lý Nghỉ Phép. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Hàm chuyển đổi định dạng ngày từ yyyy-MM-dd sang dd/MM/yyyy
         function formatDateToVN(dateStr) {
             if (!dateStr) return 'Chưa chọn ngày';
             const date = new Date(dateStr);
@@ -146,22 +73,15 @@
             const year = date.getFullYear();
             return `${day}/${month}/${year}`;
         }
-
-        // Lấy các input và span hiển thị
         const fromDateInput = document.getElementById('fromDate');
         const fromDateDisplay = document.getElementById('fromDateDisplay');
         const toDateInput = document.getElementById('toDate');
         const toDateDisplay = document.getElementById('toDateDisplay');
-
-        // Hiển thị giá trị ban đầu (nếu có) theo format Việt Nam
         fromDateDisplay.textContent = formatDateToVN(fromDateInput.value);
         toDateDisplay.textContent = formatDateToVN(toDateInput.value);
-
-        // Xử lý khi người dùng chọn ngày
         fromDateInput.addEventListener('change', function() {
             fromDateDisplay.textContent = formatDateToVN(this.value);
         });
-
         toDateInput.addEventListener('change', function() {
             toDateDisplay.textContent = formatDateToVN(this.value);
         });

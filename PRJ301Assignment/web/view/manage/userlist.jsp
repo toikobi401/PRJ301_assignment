@@ -6,236 +6,99 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Danh Sách User</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-        }
-
-        h2 {
-            text-align: center;
-            color: #1a73e8;
-            margin-bottom: 30px;
-            font-size: 28px;
-            font-weight: 600;
-        }
-
-        .search-form {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .search-form input[type="text"] {
-            padding: 10px;
-            width: 300px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .search-form button {
-            padding: 10px 20px;
-            margin-left: 10px;
-            background-color: #1a73e8;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .search-form button:hover {
-            background-color: #1557b0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 15px;
-        }
-
-        th, td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #e0e0e0;
-        }
-
-        th {
-            background-color: #1a73e8;
-            color: white;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        tr:hover {
-            background-color: #f5f7fa;
-        }
-
-        .no-data {
-            text-align: center;
-            color: #666;
-            padding: 30px;
-            font-size: 16px;
-        }
-
-        .btn {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-size: 14px;
-            text-decoration: none;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-view {
-            background-color: #1a73e8;
-        }
-
-        .btn-view:hover {
-            background-color: #1557b0;
-        }
-
-        .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            font-size: 16px;
-        }
-
-        .back-link a {
-            color: #1a73e8;
-            text-decoration: none;
-        }
-
-        .back-link a:hover {
-            text-decoration: underline;
-        }
-
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .pagination a {
-            color: #1a73e8;
-            text-decoration: none;
-            padding: 8px 12px;
-            margin: 0 5px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .pagination a:hover {
-            background-color: #1a73e8;
-            color: white;
-        }
-
-        .pagination .current {
-            background-color: #1a73e8;
-            color: white;
-            padding: 8px 12px;
-            margin: 0 5px;
-            border: 1px solid #1a73e8;
-            border-radius: 5px;
-        }
-
-        @media (max-width: 768px) {
-            table, th, td {
-                display: block;
-                width: 100%;
-            }
-            th, td {
-                padding: 10px;
-            }
-            .search-form input[type="text"] {
-                width: 100%;
-            }
-            .search-form button {
-                margin-left: 0;
-                margin-top: 10px;
-                width: 100%;
-            }
-        }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Arial, sans-serif; }
+        .navbar-custom { background-color: #007bff; }
+        .navbar-custom .navbar-brand, .navbar-custom .nav-link { color: white; }
+        .container-custom { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 20px; margin-bottom: 20px; }
+        h2 { color: #007bff; font-weight: 600; margin-bottom: 20px; }
+        .btn-custom { padding: 8px 16px; font-size: 14px; }
+        .btn-primary-custom { background-color: #007bff; border-color: #007bff; }
+        .btn-primary-custom:hover { background-color: #0056b3; border-color: #0056b3; }
+        /* Đảm bảo màu chữ của các nút là màu trắng */
+        .btn-custom, .btn-primary-custom, .page-link { color: white !important; }
+        /* Điều chỉnh màu chữ của các nút phân trang */
+        .page-link { background-color: #007bff; border-color: #007bff; }
+        .page-link:hover { background-color: #0056b3; border-color: #0056b3; }
+        .page-item.active .page-link { background-color: #0056b3; border-color: #0056b3; }
+        footer { text-align: center; padding: 10px; background-color: #007bff; color: white; position: fixed; bottom: 0; width: 100%; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Danh Sách User</h2>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<%=request.getContextPath()%>/home">Quản Lý Nghỉ Phép</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/logout">Đăng Xuất</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-        <!-- Form tìm kiếm -->
-        <form class="search-form" method="get" action="<%=request.getContextPath()%>/agenda/userlist">
-            <input type="text" name="search" placeholder="Nhập tên để tìm kiếm..." value="${param.search}">
-            <button type="submit">Tìm kiếm</button>
+    <div class="container container-custom">
+        <h2 class="text-center">Danh Sách User</h2>
+        <form class="d-flex justify-content-center mb-4" method="get" action="<%=request.getContextPath()%>/agenda/userlist">
+            <input type="text" class="form-control w-50 me-2" name="search" placeholder="Nhập tên để tìm kiếm..." value="${param.search}">
+            <button type="submit" class="btn btn-primary-custom btn-custom">Tìm kiếm</button>
         </form>
-
         <c:choose>
             <c:when test="${not empty users}">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Tên User</th>
-                            <th>Hành Động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="user" items="${users}">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
                             <tr>
-                                <td>${user.fullName}</td>
-                                <td>
-                                    <a href="<%=request.getContextPath()%>/agenda/userworkingdetail?userId=${user.userID}" class="btn btn-view">Xem Chi Tiết</a>
-                                </td>
+                                <th>Tên User</th>
+                                <th>Hành Động</th>
                             </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-
-                <!-- Phân trang -->
-                <div class="pagination">
-                    <c:if test="${currentPage > 1}">
-                        <a href="<%=request.getContextPath()%>/agenda/userlist?page=${currentPage - 1}&search=${param.search}">Trang trước</a>
-                    </c:if>
-
-                    <c:forEach begin="1" end="${totalPages}" var="i">
-                        <c:choose>
-                            <c:when test="${i == currentPage}">
-                                <span class="current">${i}</span>
-                            </c:when>
-                            <c:otherwise>
-                                <a href="<%=request.getContextPath()%>/agenda/userlist?page=${i}&search=${param.search}">${i}</a>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:forEach>
-
-                    <c:if test="${currentPage < totalPages}">
-                        <a href="<%=request.getContextPath()%>/agenda/userlist?page=${currentPage + 1}&search=${param.search}">Trang sau</a>
-                    </c:if>
+                        </thead>
+                        <tbody>
+                            <c:forEach var="user" items="${users}">
+                                <tr>
+                                    <td>${user.fullName}</td>
+                                    <td>
+                                        <a href="<%=request.getContextPath()%>/agenda/userworkingdetail?userId=${user.userID}" class="btn btn-primary-custom btn-custom">Xem Chi Tiết</a>
+                                    </td>
+                                </tr>
+                            </c:forEach>
+                        </tbody>
+                    </table>
                 </div>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <c:if test="${currentPage > 1}">
+                            <li class="page-item">
+                                <a class="page-link" href="<%=request.getContextPath()%>/agenda/userlist?page=${currentPage - 1}&search=${param.search}">Trang trước</a>
+                            </li>
+                        </c:if>
+                        <c:forEach begin="1" end="${totalPages}" var="i">
+                            <li class="page-item ${i == currentPage ? 'active' : ''}">
+                                <a class="page-link" href="<%=request.getContextPath()%>/agenda/userlist?page=${i}&search=${param.search}">${i}</a>
+                            </li>
+                        </c:forEach>
+                        <c:if test="${currentPage < totalPages}">
+                            <li class="page-item">
+                                <a class="page-link" href="<%=request.getContextPath()%>/agenda/userlist?page=${currentPage + 1}&search=${param.search}">Trang sau</a>
+                            </li>
+                        </c:if>
+                    </ul>
+                </nav>
             </c:when>
             <c:otherwise>
-                <p class="no-data">Hiện tại không có user nào phù hợp với tìm kiếm.</p>
+                <p class="text-center text-muted">Hiện tại không có user nào phù hợp với tìm kiếm.</p>
             </c:otherwise>
         </c:choose>
-        <div class="back-link">
-            <a href="<%=request.getContextPath()%>/home">Quay về Trang Chủ</a>
+        <div class="text-center mt-3">
+            <a href="<%=request.getContextPath()%>/home" class="btn btn-primary-custom btn-custom">Quay về Trang Chủ</a>
         </div>
     </div>
+
+    <footer>
+        <p>© 2025 Quản Lý Nghỉ Phép. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

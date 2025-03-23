@@ -36,7 +36,6 @@ public class YourLeaveRequestController extends HttpServlet {
         // Gọi LeaveRequestDBContext để lấy danh sách đơn xin nghỉ
         LeaveRequestDBContext db = new LeaveRequestDBContext();
         ArrayList<LeaveRequest> allRequests = db.list(userId);
-        System.out.println("Danh sách đơn xin nghỉ phép của UserID: " + userId);
 
         // Tính toán phân trang
         int totalRecords = allRequests.size();

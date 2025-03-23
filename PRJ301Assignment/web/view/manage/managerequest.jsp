@@ -7,162 +7,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản Lý Đơn Xin Nghỉ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f0f2f5;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        h2 {
-            text-align: center;
-            color: #1a73e8;
-            margin-bottom: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        th {
-            background-color: #1a73e8;
-            color: white;
-        }
-        tr:hover {
-            background-color: #f5f5f5;
-        }
-        .status-pending {
-            color: #ff9800;
-            font-weight: bold;
-        }
-        /* Đảm bảo cột Hành Động có đủ chiều rộng */
-        th:last-child, td:last-child {
-            width: 150px; /* Điều chỉnh chiều rộng cột Hành Động */
-            text-align: center; /* Căn giữa các nút */
-        }
-        .action-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px; /* Khoảng cách giữa các nút */
-            flex-wrap: nowrap; /* Không cho phép xuống dòng */
-        }
-        .btn {
-            padding: 8px 16px;
-            border-radius: 4px;
-            text-decoration: none;
-            color: white;
-            font-size: 14px;
-            display: inline-block; /* Đảm bảo nút hiển thị đúng */
-        }
-        .btn-approve {
-            background-color: #4CAF50;
-        }
-        .btn-approve:hover {
-            background-color: #45a049;
-        }
-        .btn-reject {
-            background-color: #e63946;
-        }
-        .btn-reject:hover {
-            background-color: #d00000;
-        }
-        .pagination {
-            text-align: center;
-        }
-        .pagination a {
-            padding: 8px 16px;
-            text-decoration: none;
-            color: #1a73e8;
-            border: 1px solid #ddd;
-            margin: 0 4px;
-            border-radius: 4px;
-        }
-        .pagination a.active {
-            background-color: #1a73e8;
-            color: white;
-            border: 1px solid #1a73e8;
-        }
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
-        .back-link {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .back-link a {
-            color: #1a73e8;
-            text-decoration: none;
-        }
-        .back-link a:hover {
-            text-decoration: underline;
-        }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Arial, sans-serif; }
+        .navbar-custom { background-color: #007bff; }
+        .navbar-custom .navbar-brand, .navbar-custom .nav-link { color: white; }
+        .container-custom { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 20px; margin-bottom: 20px; }
+        h2 { color: #007bff; font-weight: 600; margin-bottom: 20px; }
+        .btn-custom { padding: 8px 16px; font-size: 14px; }
+        .btn-success-custom { background-color: #28a745; border-color: #28a745; }
+        .btn-success-custom:hover { background-color: #218838; border-color: #218838; }
+        .btn-danger-custom { background-color: #dc3545; border-color: #dc3545; }
+        .btn-danger-custom:hover { background-color: #c82333; border-color: #c82333; }
+        .status-pending { color: #ff9800; font-weight: bold; }
+        footer { text-align: center; padding: 10px; background-color: #007bff; color: white; position: fixed; bottom: 0; width: 100%; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Danh Sách Đơn Xin Nghỉ Phép Đang Chờ Duyệt</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID Đơn</th>
-                    <th>Họ Tên</th>
-                    <th>Từ Ngày</th>
-                    <th>Đến Ngày</th>
-                    <th>Lý Do</th>
-                    <th>Trạng Thái</th>
-                    <th>Ngày Tạo</th>
-                    <th>Ngày Cập Nhật</th>
-                    <th>Hành Động</th>
-                </tr>
-            </thead>
-            <tbody>
-                <c:forEach var="requestWithUser" items="${leaveRequests}">
-                    <c:set var="request" value="${requestWithUser[0]}" />
-                    <c:set var="fullName" value="${requestWithUser[1]}" />
-                    <tr>
-                        <td>${request.requestID}</td>
-                        <td>${fullName}</td>
-                        <td><fmt:formatDate value="${request.fromDate}" pattern="dd/MM/yyyy"/></td>
-                        <td><fmt:formatDate value="${request.toDate}" pattern="dd/MM/yyyy"/></td>
-                        <td>${request.reason}</td>
-                        <td class="status-pending">${request.leaveStatus.statusName}</td>
-                        <td><fmt:formatDate value="${request.createAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
-                        <td><fmt:formatDate value="${request.updateAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
-                        <td>
-                            <div class="action-buttons">
-                                <a href="<%=request.getContextPath()%>/LeaveRequest/approve?id=${request.requestID}" class="btn btn-approve">Duyệt</a>
-                                <a href="<%=request.getContextPath()%>/LeaveRequest/reject?id=${request.requestID}" class="btn btn-reject">Từ chối</a>
-                            </div>
-                        </td>
-                    </tr>
-                </c:forEach>
-            </tbody>
-        </table>
-
-        <div class="pagination">
-            <c:if test="${totalPages > 0}">
-                <c:forEach begin="1" end="${totalPages}" var="i">
-                    <a href="<%=request.getContextPath()%>/LeaveRequest/manage?page=${i}" class="${i == currentPage ? 'active' : ''}">${i}</a>
-                </c:forEach>
-            </c:if>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<%=request.getContextPath()%>/home">Quản Lý Nghỉ Phép</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/logout">Đăng Xuất</a>
+                    </li>
+                </ul>
+            </div>
         </div>
+    </nav>
 
-        <div class="back-link">
-            <a href="<%=request.getContextPath()%>/home">Quay về Trang Chủ</a>
+    <div class="container container-custom">
+        <h2 class="text-center">Danh Sách Đơn Xin Nghỉ Phép Đang Chờ Duyệt</h2>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID Đơn</th>
+                        <th>Họ Tên</th>
+                        <th>Từ Ngày</th>
+                        <th>Đến Ngày</th>
+                        <th>Lý Do</th>
+                        <th>Trạng Thái</th>
+                        <th>Ngày Tạo</th>
+                        <th>Ngày Cập Nhật</th>
+                        <th>Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <c:forEach var="requestWithUser" items="${leaveRequests}">
+                        <c:set var="request" value="${requestWithUser[0]}" />
+                        <c:set var="fullName" value="${requestWithUser[1]}" />
+                        <tr>
+                            <td>${request.requestID}</td>
+                            <td>${fullName}</td>
+                            <td><fmt:formatDate value="${request.fromDate}" pattern="dd/MM/yyyy"/></td>
+                            <td><fmt:formatDate value="${request.toDate}" pattern="dd/MM/yyyy"/></td>
+                            <td>${request.reason}</td>
+                            <td class="status-pending">${request.leaveStatus.statusName}</td>
+                            <td><fmt:formatDate value="${request.createAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                            <td><fmt:formatDate value="${request.updateAt}" pattern="dd/MM/yyyy HH:mm:ss"/></td>
+                            <td>
+                                <a href="<%=request.getContextPath()%>/LeaveRequest/approve?id=${request.requestID}" class="btn btn-success-custom btn-custom">Duyệt</a>
+                                <a href="<%=request.getContextPath()%>/LeaveRequest/reject?id=${request.requestID}" class="btn btn-danger-custom btn-custom">Từ chối</a>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <c:forEach begin="1" end="${totalPages}" var="i">
+                    <li class="page-item ${i == currentPage ? 'active' : ''}">
+                        <a class="page-link" href="<%=request.getContextPath()%>/LeaveRequest/manage?page=${i}">${i}</a>
+                    </li>
+                </c:forEach>
+            </ul>
+        </nav>
+        <div class="text-center mt-3">
+            <a href="<%=request.getContextPath()%>/home" class="btn btn-primary-custom btn-custom">Quay về Trang Chủ</a>
         </div>
     </div>
+
+    <footer>
+        <p>&copy; 2025 Quản Lý Nghỉ Phép. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

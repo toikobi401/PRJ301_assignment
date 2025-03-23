@@ -5,62 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thành Công</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: #f4f7f9;
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .success-container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            max-width: 500px;
-            width: 100%;
-            text-align: center;
-        }
-
-        .success-container h2 {
-            color: #27ae60;
-            margin-bottom: 20px;
-            font-size: 24px;
-            font-weight: 600;
-        }
-
-        .success-container p {
-            color: #34495e;
-            font-size: 16px;
-            margin-bottom: 25px;
-        }
-
-        .success-container a {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 14px;
-            transition: background-color 0.3s ease;
-        }
-
-        .success-container a:hover {
-            background-color: #2980b9;
-        }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Arial, sans-serif; }
+        .navbar-custom { background-color: #007bff; }
+        .navbar-custom .navbar-brand, .navbar-custom .nav-link { color: white; }
+        .container-custom { background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); margin-top: 20px; margin-bottom: 20px; }
+        h2 { color: #28a745; font-weight: 600; margin-bottom: 20px; }
+        .btn-custom { padding: 8px 16px; font-size: 14px; }
+        .btn-primary-custom { background-color: #007bff; border-color: #007bff; }
+        .btn-primary-custom:hover { background-color: #0056b3; border-color: #0056b3; }
+        footer { text-align: center; padding: 10px; background-color: #007bff; color: white; position: fixed; bottom: 0; width: 100%; }
     </style>
 </head>
 <body>
-    <div class="success-container">
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<%=request.getContextPath()%>/home">Quản Lý Nghỉ Phép</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<%=request.getContextPath()%>/logout">Đăng Xuất</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container container-custom text-center">
         <h2>Tạo Đơn Xin Nghỉ Thành Công!</h2>
         <p>Đơn xin nghỉ của bạn đã được gửi thành công. Nhấn vào liên kết dưới đây để quay lại trang chủ.</p>
-        <a href="<%=request.getContextPath()%>/view/auth/home.jsp">Quay về Trang Chủ</a>
+        <a href="<%=request.getContextPath()%>/view/auth/home.jsp" class="btn btn-primary-custom btn-custom">Quay về Trang Chủ</a>
     </div>
+
+    <footer>
+        <p>&copy; 2025 Quản Lý Nghỉ Phép. All rights reserved.</p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
