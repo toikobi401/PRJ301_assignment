@@ -37,10 +37,6 @@
         <servlet-class>controller.agenda.UserWorkingDetailController</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Test</servlet-name>
-        <servlet-class>controller.Test</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>BaseRequireAuthenticationController</servlet-name>
         <servlet-class>controller.authentication.BaseRequireAuthenticationController</servlet-class>
     </servlet>
@@ -91,10 +87,6 @@
     <servlet-mapping>
         <servlet-name>UserWorkingDetailController</servlet-name>
         <url-pattern>/agenda/userworkingdetail</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Test</servlet-name>
-        <url-pattern>/test</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BaseRequireAuthenticationController</servlet-name>
