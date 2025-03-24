@@ -77,6 +77,14 @@ public class CreateLeaveRequestController extends HttpServlet {
             java.sql.Date startDate = java.sql.Date.valueOf(startLocalDate);
             java.sql.Date endDate = java.sql.Date.valueOf(endLocalDate);
 
+            // Kiểm tra ngày bắt đầu so với ngày hiện tại
+            LocalDate today = LocalDate.now();
+            if (startLocalDate.isBefore(today)) {
+                request.setAttribute("errorMessage", "Ngày bắt đầu không được nằm trong quá khứ. Vui lòng chọn ngày từ hôm nay trở đi.");
+                request.getRequestDispatcher("/view/function/leaverequest.jsp").forward(request, response);
+                return;
+            }
+
             if (startDate.after(endDate)) {
                 request.setAttribute("errorMessage", "Ngày bắt đầu không thể sau ngày kết thúc.");
                 request.getRequestDispatcher("/view/function/leaverequest.jsp").forward(request, response);
